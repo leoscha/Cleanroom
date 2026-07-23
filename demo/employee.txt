@@ -1,0 +1,10 @@
+SYNTHETIC DEMO DATA — NOT A REAL EMPLOYEE
+
+Employee: Jordan Sample
+Work email: jordan.sample@example.test
+Phone: 202-555-0148
+SSN: 000-12-3456
+Date of birth: February 29, 1988
+password = SyntheticOnly!42
+Office: 42 Fictional Plaza, Exampletown, VA 22000
+

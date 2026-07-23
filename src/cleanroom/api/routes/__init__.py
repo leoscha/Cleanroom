@@ -4,7 +4,6 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 
 from cleanroom.config.policies import load_policy
-from cleanroom.config.settings import endpoint_network_kind
 from cleanroom.files.lifecycle import move_original
 from cleanroom.models.job import JobStatus
 from cleanroom.runtime import Runtime
@@ -43,7 +42,7 @@ def build_router(runtime: Runtime) -> APIRouter:
                 "spotless_dir": str(runtime.settings.spotless_dir),
                 "policy": runtime.processing.policy.name,
                 "model": runtime.settings.ollama_model,
-                "ollama_network": endpoint_network_kind(runtime.settings.ollama_base_url),
+                "ollama_network": runtime.settings.validated_ollama_endpoint.kind.value,
                 "verify_output": runtime.settings.verify_output,
                 "ollama_verify": runtime.settings.ollama_verify}
 

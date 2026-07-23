@@ -1,0 +1,11 @@
+{
+  "case": "contextual.txt",
+  "document_type": "text",
+  "expected_count": 2,
+  "false_negatives": 0,
+  "false_positives": 0,
+  "found_count": 1,
+  "provider_error": null,
+  "source_hash": "babd4e3e33f7bf8eb4b505764818d70e488a064d88adef0f020b2ca313754e5b",
+  "true_positives": 1
+}

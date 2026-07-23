@@ -1,0 +1,11 @@
+{
+  "case": "long.txt",
+  "document_type": "text",
+  "expected_count": 1,
+  "false_negatives": 0,
+  "false_positives": 0,
+  "found_count": 1,
+  "provider_error": null,
+  "source_hash": "18102713c25f0dd484a219e44f41f3a284d4f7790654ad8b4a845fd9e64ba99e",
+  "true_positives": 1
+}

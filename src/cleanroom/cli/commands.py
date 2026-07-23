@@ -5,15 +5,23 @@ from datetime import datetime
 from importlib.resources import files
 from pathlib import Path
 from typing import Annotated
-from urllib.parse import urlparse
+from urllib.parse import urlsplit
 
 import typer
+from pydantic import ValidationError
 from rich.console import Console
 from rich.table import Table
 from sqlalchemy import text
 
+from cleanroom import __version__
+from cleanroom.config.ollama_endpoint import (
+    ConnectionMode,
+    EndpointValidationError,
+    format_safe_endpoint,
+    validate_ollama_endpoint,
+)
 from cleanroom.config.policies import PolicyError, load_policy
-from cleanroom.config.settings import Settings, endpoint_network_kind
+from cleanroom.config.settings import Settings
 from cleanroom.database.models import JobRecord
 from cleanroom.database.session import create_db_engine, initialize_database
 from cleanroom.files.discovery import discover_files
@@ -27,17 +35,25 @@ from cleanroom.services.verification_service import VerificationService
 from cleanroom.watchers.folder_watcher import watch_folder
 
 console = Console()
-app = typer.Typer(no_args_is_help=True, help="Local-first document sanitization")
+app = typer.Typer(no_args_is_help=True, help="Local-first AI Privacy Gateway")
 policies_app = typer.Typer(invoke_without_command=True, help="List and validate policies")
+configure_app = typer.Typer(help="Guided configuration")
 app.add_typer(policies_app, name="policies")
+app.add_typer(configure_app, name="configure")
 
 
 def _runtime() -> Runtime:
     try:
         return build_runtime()
     except Exception as exc:
-        console.print(f"[red]Configuration error:[/] {exc}")
+        console.print(f"[red]Configuration error:[/] {_safe_configuration_error(exc)}")
         raise typer.Exit(2) from exc
+
+
+@app.command()
+def version() -> None:
+    """Print the installed Cleanroom version."""
+    console.print(f"Cleanroom v{__version__}")
 
 
 @app.command()
@@ -62,7 +78,12 @@ def init() -> None:
     initialize_database(engine)
     console.print("[bold green]Cleanroom workspace initialized.[/]")
     console.print(f"Created {len(created)} item(s). Existing configuration was preserved.")
-    console.print("Next: edit .env, then run [bold]cleanroom doctor[/].")
+    console.print("\nCleanroom is configured to use a local Ollama instance.\n")
+    console.print("Endpoint:\nhttp://127.0.0.1:11434\n")
+    console.print("Next steps:\n\n1. Start Ollama\n2. Install your preferred model\n3. Run:\n")
+    console.print("[bold]cleanroom doctor[/]\n")
+    console.print("Remote Ollama servers can be configured later with "
+                  "[bold]cleanroom configure ollama[/].")
 
 
 @app.command()
@@ -93,10 +114,13 @@ def doctor() -> None:
         check(True, "SQLite available", "")
     except Exception:
         check(False, "", "SQLite unavailable; check CLEANROOM_DATABASE_URL")
-    kind = endpoint_network_kind(runtime.settings.ollama_base_url)
-    check(kind in {"loopback", "private", "tailscale"} or runtime.settings.allow_public_ollama,
-          f"Endpoint is {kind}: {_masked_url(runtime.settings.ollama_base_url)}",
-          "Ollama endpoint is public; set a private OLLAMA_BASE_URL")
+    endpoint = runtime.settings.validated_ollama_endpoint
+    console.print("\n[bold]Ollama[/]\n")
+    check(True, f"Connection mode: {endpoint.mode.display_name}", "")
+    check(True, f"Endpoint: {endpoint.safe_url}", "")
+    check(True, f"Endpoint classification: {endpoint.kind.display_name}", "")
+    if endpoint.mode is not ConnectionMode.LOCAL:
+        check(True, "Host validated", "")
     health, structured_error = asyncio.run(_doctor_ollama(runtime))
     check(bool(health.get("reachable")), "Ollama reachable",
           "Ollama unreachable; check OLLAMA_BASE_URL, Tailscale, and Windows Firewall")
@@ -198,11 +222,73 @@ def show(job_id: str) -> None:
 
 @app.command("config")
 def config_command() -> None:
-    """Display resolved configuration with network details masked."""
-    settings = Settings()
-    data = settings.model_dump(mode="json")
-    data["ollama_base_url"] = _masked_url(settings.ollama_base_url)
-    console.print_json(data=data)
+    """Display resolved Ollama configuration without exposing credentials."""
+    try:
+        settings = Settings()
+    except Exception as exc:
+        console.print(f"[red]Configuration error:[/] {_safe_configuration_error(exc)}")
+        raise typer.Exit(2) from None
+    endpoint = settings.validated_ollama_endpoint
+    console.print(f"Connection Mode: {endpoint.mode.display_name}")
+    console.print(f"Endpoint: {endpoint.safe_url}")
+    console.print(f"Model: {settings.ollama_model}")
+    console.print(f"Endpoint Type: {endpoint.kind.display_name}")
+
+
+@configure_app.command("ollama")
+def configure_ollama() -> None:
+    """Interactively configure and validate an Ollama deployment."""
+    console.print("[bold]Ollama connection setup[/]\n")
+    console.print("1. Local Ollama (recommended)\n")
+    console.print("2. Private-network Ollama\n   (LAN / VPN / Tailscale)\n")
+    console.print("3. Custom endpoint\n")
+    choice = typer.prompt("Select a deployment mode", type=int)
+    modes = {1: ConnectionMode.LOCAL, 2: ConnectionMode.PRIVATE_NETWORK,
+             3: ConnectionMode.CUSTOM}
+    if choice not in modes:
+        console.print("[red]Choose 1, 2, or 3.[/]")
+        raise typer.Exit(2)
+    mode = modes[choice]
+    existing = _read_env(Path(".env"))
+    default_url = existing.get("OLLAMA_BASE_URL", "http://127.0.0.1:11434")
+    if mode is ConnectionMode.LOCAL:
+        url = typer.prompt("Ollama endpoint", default="http://127.0.0.1:11434")
+    else:
+        if urlsplit(default_url).username is not None:
+            console.print(f"Current endpoint: {format_safe_endpoint(default_url)}")
+            url = typer.prompt("Ollama endpoint")
+        else:
+            url = typer.prompt("Ollama endpoint", default=default_url)
+        console.print("[yellow]Remote Ollama has no built-in authentication by default. "
+                      "Use a trusted network or a secured reverse proxy.[/]")
+
+    allow_public = existing.get("CLEANROOM_ALLOW_PUBLIC_OLLAMA", "false").lower() == "true"
+    allow_insecure = existing.get(
+        "CLEANROOM_ALLOW_INSECURE_REMOTE_OLLAMA", "false").lower() == "true"
+    if mode is not ConnectionMode.LOCAL and url.lower().startswith("http://") and not allow_insecure:
+        if not typer.confirm("Allow unencrypted HTTP to this remote endpoint?", default=False):
+            console.print("[yellow]Configuration was not changed.[/]")
+            raise typer.Exit(1)
+        allow_insecure = True
+    try:
+        endpoint = validate_ollama_endpoint(
+            url, mode, allow_public=allow_public, allow_insecure_remote=allow_insecure
+        )
+    except EndpointValidationError as exc:
+        console.print(f"[red]Invalid Ollama endpoint:[/] {exc}")
+        console.print("Configuration was not changed.")
+        raise typer.Exit(2) from None
+
+    updates = {
+        "OLLAMA_CONNECTION_MODE": mode.value,
+        "OLLAMA_BASE_URL": endpoint.url,
+    }
+    if allow_insecure:
+        updates["CLEANROOM_ALLOW_INSECURE_REMOTE_OLLAMA"] = "true"
+    _update_env(Path(".env"), updates)
+    console.print(f"[green]✓[/] Saved {mode.display_name} Ollama configuration")
+    console.print(f"Endpoint: {endpoint.safe_url}")
+    console.print("Run [bold]cleanroom doctor[/] to test the connection.")
 
 
 @policies_app.callback(invoke_without_command=True)
@@ -245,8 +331,10 @@ def demo(run: Annotated[bool, typer.Option("--run")] = False,
         create_synthetic_pdf(destination)
     else:
         destination.write_text(
-            "Synthetic customer Jane Example uses jane@example.test and 312-555-0199.\n"
-            "Support password = TestingOnly123!\n", encoding="utf-8")
+            "This file contains synthetic demonstration data only.\n"
+            "Name: Jane Example\nEmail: jane@example.test\nPhone: 312-555-0199\n",
+            encoding="utf-8",
+        )
     console.print(f"Created {destination}. All values are fake demonstration data.")
     if run:
         job = asyncio.run(runtime.processing.process(destination, check_stability=False))
@@ -370,9 +458,40 @@ def watch() -> None:
         console.print("Stopped cleanly")
 
 
-def _masked_url(value: str) -> str:
-    parsed = urlparse(value)
-    return f"{parsed.scheme}://***:{parsed.port or 11434}"
+def _read_env(path: Path) -> dict[str, str]:
+    if not path.exists():
+        return {}
+    values: dict[str, str] = {}
+    for line in path.read_text(encoding="utf-8").splitlines():
+        stripped = line.strip()
+        if stripped and not stripped.startswith("#") and "=" in stripped:
+            key, value = stripped.split("=", 1)
+            values[key.strip()] = value.strip()
+    return values
+
+
+def _safe_configuration_error(exc: Exception) -> str:
+    if isinstance(exc, ValidationError):
+        messages = [str(item.get("msg", "Invalid configuration")) for item in exc.errors()]
+        return "; ".join(messages)
+    return type(exc).__name__
+
+
+def _update_env(path: Path, updates: dict[str, str]) -> None:
+    lines = path.read_text(encoding="utf-8").splitlines() if path.exists() else []
+    remaining = dict(updates)
+    output: list[str] = []
+    for line in lines:
+        if "=" in line and not line.lstrip().startswith("#"):
+            key = line.split("=", 1)[0].strip()
+            if key in remaining:
+                output.append(f"{key}={remaining.pop(key)}")
+                continue
+        output.append(line)
+    if output and remaining:
+        output.append("")
+    output.extend(f"{key}={value}" for key, value in remaining.items())
+    path.write_text("\n".join(output).rstrip() + "\n", encoding="utf-8")
 
 
 async def _doctor_ollama(runtime: Runtime) -> tuple[dict[str, object], str | None]:

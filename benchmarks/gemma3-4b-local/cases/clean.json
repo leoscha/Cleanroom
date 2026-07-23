@@ -1,0 +1,11 @@
+{
+  "case": "clean.txt",
+  "document_type": "text",
+  "expected_count": 0,
+  "false_negatives": 0,
+  "false_positives": 0,
+  "found_count": 0,
+  "provider_error": null,
+  "source_hash": "3cbfaab4c4d9931a7e3ca1ef77a2c884a39f2ccc08d67c2f4a9450aa4cd5b100",
+  "true_positives": 0
+}

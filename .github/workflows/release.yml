@@ -1,0 +1,37 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install -e ".[dev]"
+      - run: pytest -q
+      - run: ruff check .
+      - run: mypy src
+
+  release:
+    needs: verify
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify release notes exist
+        run: test -f "docs/releases/${GITHUB_REF_NAME}.md"
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "Text Foundation"
+          body_path: "docs/releases/${{ github.ref_name }}.md"
+          files: "docs/releases/${{ github.ref_name }}.md"
+          fail_on_unmatched_files: true

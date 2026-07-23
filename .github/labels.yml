@@ -1,0 +1,10 @@
+- {name: bug, color: d73a4a, description: "Something is not working"}
+- {name: enhancement, color: a2eeef, description: "New feature or improvement"}
+- {name: documentation, color: 0075ca, description: "Documentation improvement"}
+- {name: question, color: d876e3, description: "Usage or design question"}
+- {name: security, color: b60205, description: "Security-sensitive work; report vulnerabilities privately"}
+- {name: policies, color: 5319e7, description: "Sanitization policy behavior"}
+- {name: ollama, color: 1d76db, description: "Ollama provider or deployment"}
+- {name: pdf, color: fbca04, description: "PDF support"}
+- {name: good first issue, color: 7057ff, description: "Approachable for a first contribution"}
+- {name: help wanted, color: 008672, description: "Maintainers welcome community help"}

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title desc">
+  <title id="title">Cleanroom icon</title>
+  <desc id="desc">A document protected by a blue shield and check mark.</desc>
+  <rect width="128" height="128" rx="28" fill="#0f172a"/>
+  <path d="M31 22h42l22 22v62H31z" fill="#f8fafc"/>
+  <path d="M73 22v22h22" fill="#cbd5e1"/>
+  <path d="M64 54c11 8 21 9 29 10v14c0 16-10 25-29 31-19-6-29-15-29-31V64c8-1 18-2 29-10z" fill="#2563eb"/>
+  <path d="m49 80 9 9 20-22" fill="none" stroke="#e0f2fe" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

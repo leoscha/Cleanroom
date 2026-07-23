@@ -1,0 +1,9 @@
+SYNTHETIC DEMO DATA — NOT A REAL INVOICE
+
+Invoice: DEMO-2026-0042
+Customer email: billing@example.test
+Test payment card: 4111 1111 1111 1111
+Payment portal: https://billing.example.test/invoices/DEMO-2026-0042
+Origin IP: 10.20.30.40
+api_token = demo-token-value-1234567890
+

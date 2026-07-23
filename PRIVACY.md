@@ -1,5 +1,8 @@
 # Privacy
 
+Cleanroom is a local-first AI Privacy Gateway that sanitizes sensitive information
+before documents are shared with AI systems.
+
 Document text is read locally and sent only to the configured Ollama HTTP endpoint.
 No cloud inference provider exists. Verify that the endpoint belongs to your
 loopback, RFC1918, or Tailscale network before processing real material.

@@ -4,6 +4,7 @@ import json
 import httpx
 import pytest
 
+from cleanroom.config.ollama_endpoint import validate_ollama_endpoint
 from cleanroom.detectors.merge import merge_findings
 from cleanroom.detectors.regex_detector import RegexDetector, luhn_valid
 from cleanroom.models.finding import Category, Finding
@@ -59,7 +60,9 @@ def _provider(response_content: str | None = None, timeout: bool = False) -> Oll
             raise httpx.ReadTimeout("timed out", request=request)
         return httpx.Response(200, json={"message": {"content": response_content}})
     client = httpx.AsyncClient(transport=httpx.MockTransport(handler))
-    return OllamaDetectionProvider("http://100.64.0.1:11434", "test", retries=0, client=client)
+    endpoint = validate_ollama_endpoint("http://100.64.0.1:11434", "private-network",
+                                       allow_insecure_remote=True)
+    return OllamaDetectionProvider(endpoint, "test", retries=0, client=client)
 
 
 def test_ollama_validates_repeated_and_missing_spans(policy) -> None:
@@ -96,7 +99,9 @@ def test_ollama_retries_truncated_json_then_accepts_valid_output(policy) -> None
         calls += 1
         return httpx.Response(200, json={"message": {"content": next(responses)}})
 
-    provider = OllamaDetectionProvider("http://100.64.0.1:11434", "test", retries=1,
+    endpoint = validate_ollama_endpoint("http://100.64.0.1:11434", "private-network",
+                                       allow_insecure_remote=True)
+    provider = OllamaDetectionProvider(endpoint, "test", retries=1,
         client=httpx.AsyncClient(transport=httpx.MockTransport(handler)))
     findings = asyncio.run(provider.detect("Jane", policy))
     assert calls == 2

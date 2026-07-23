@@ -1,0 +1,11 @@
+{
+  "case": "multiline.txt",
+  "document_type": "text",
+  "expected_count": 2,
+  "false_negatives": 0,
+  "false_positives": 1,
+  "found_count": 2,
+  "provider_error": null,
+  "source_hash": "ccfdc457c7d23d10e21b53ec7c685a0d11e9344fb6167a5809ffe05143c4548e",
+  "true_positives": 1
+}

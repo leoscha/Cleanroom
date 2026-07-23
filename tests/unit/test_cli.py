@@ -14,6 +14,12 @@ from cleanroom.services.scan_service import ScanService
 runner = CliRunner()
 
 
+def test_version() -> None:
+    result = runner.invoke(commands.app, ["version"])
+    assert result.exit_code == 0
+    assert result.stdout.strip() == "Cleanroom v0.2.0"
+
+
 def _runtime(settings, policy, provider=None) -> Runtime:
     engine = create_db_engine(settings.database_url)
     initialize_database(engine)
@@ -66,8 +72,8 @@ def test_scan_status_show_config_and_demo(settings, policy, monkeypatch) -> None
 
     monkeypatch.setattr(commands, "Settings", lambda: settings)
     configured = runner.invoke(commands.app, ["config"])
-    assert configured.exit_code == 0 and "100.64.0.1" not in configured.stdout
-    assert "***" in configured.stdout
+    assert configured.exit_code == 0 and "Private Network" in configured.stdout
+    assert "100.64.0.1" in configured.stdout
 
     demo = runner.invoke(commands.app, ["demo", "--run"])
     assert demo.exit_code == 0 and "fake demonstration data" in demo.stdout

@@ -1,0 +1,33 @@
+name: Feature request
+description: Propose an improvement to Cleanroom
+title: "[Feature]: "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What privacy or workflow problem should Cleanroom solve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed approach
+    validations:
+      required: true
+  - type: textarea
+    id: security
+    attributes:
+      label: Security and privacy implications
+      description: Describe new data flows, trust boundaries, or fail-closed behavior.
+    validations:
+      required: true
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Privacy check
+      options:
+        - label: I have not included real sensitive data.
+          required: true
+

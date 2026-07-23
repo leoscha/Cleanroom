@@ -14,7 +14,7 @@ def test_private_ollama_structured_output() -> None:
     if os.getenv("CLEANROOM_RUN_LIVE_OLLAMA") != "1":
         pytest.skip("set CLEANROOM_RUN_LIVE_OLLAMA=1 to enable private live testing")
     settings = Settings()
-    provider = OllamaDetectionProvider(settings.ollama_base_url, settings.ollama_model,
+    provider = OllamaDetectionProvider(settings.validated_ollama_endpoint, settings.ollama_model,
                                        settings.ollama_timeout_seconds,
                                        settings.ollama_max_retries)
     findings = asyncio.run(provider.detect(

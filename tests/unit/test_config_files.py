@@ -18,12 +18,15 @@ from cleanroom.files.text_handler import (
 
 
 def test_settings_reject_public_ollama() -> None:
-    with pytest.raises(ValidationError, match="private"):
-        Settings(OLLAMA_BASE_URL="https://8.8.8.8:11434")
+    with pytest.raises(ValidationError, match="Public Ollama"):
+        Settings(OLLAMA_CONNECTION_MODE="custom", OLLAMA_BASE_URL="https://8.8.8.8:11434")
 
 
 def test_settings_accept_tailscale() -> None:
-    assert Settings(OLLAMA_BASE_URL="http://100.100.1.2:11434").ollama_base_url.startswith("http")
+    settings = Settings(OLLAMA_CONNECTION_MODE="private-network",
+                        OLLAMA_BASE_URL="http://100.100.1.2:11434",
+                        CLEANROOM_ALLOW_INSECURE_REMOTE_OLLAMA=True)
+    assert settings.ollama_base_url.startswith("http")
 
 
 def test_pdf_settings_and_extensions_are_validated() -> None:

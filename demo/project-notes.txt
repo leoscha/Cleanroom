@@ -1,0 +1,10 @@
+SYNTHETIC DEMO DATA — NOT A REAL PROJECT
+
+Internal company: Example Research Cooperative
+Project: Blue Lantern
+Owner: Casey Example
+Private endpoint: http://10.42.0.15:8080/internal
+Bearer demo.header.signature
+secret = blue-lantern-demo-secret
+Note: The only pilot customer near the fictional North Harbor depot is Avery Example.
+

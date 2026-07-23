@@ -1,0 +1,11 @@
+{
+  "case": "repeated.txt",
+  "document_type": "text",
+  "expected_count": 2,
+  "false_negatives": 0,
+  "false_positives": 0,
+  "found_count": 2,
+  "provider_error": null,
+  "source_hash": "37d3eddc49caba885da06766002fe811fc6f0a1ff7a8fa2c13567e1868951b2d",
+  "true_positives": 2
+}

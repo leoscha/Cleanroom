@@ -1,0 +1,11 @@
+{
+  "case": "structured.txt",
+  "document_type": "text",
+  "expected_count": 5,
+  "false_negatives": 0,
+  "false_positives": 0,
+  "found_count": 5,
+  "provider_error": null,
+  "source_hash": "608ef1875c872a65f3761ea0567d309856bef5fc3902fde385d0611ae1d53ec6",
+  "true_positives": 5
+}

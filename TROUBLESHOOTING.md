@@ -2,7 +2,13 @@
 
 ## Doctor fails
 
-- Public endpoint: set `OLLAMA_BASE_URL` to a loopback, RFC1918, or Tailscale IP.
+- Invalid connection mode: choose `local`, `private-network`, or `custom`.
+- Existing remote endpoint migration: add `OLLAMA_CONNECTION_MODE=private-network`.
+- Public endpoint: use a loopback/private endpoint; public access is blocked by default.
+- Insecure remote endpoint: prefer HTTPS, or explicitly acknowledge trusted-network
+  HTTP with `CLEANROOM_ALLOW_INSECURE_REMOTE_OLLAMA=true`.
+- DNS failure or mixed DNS: fix the hostname so every answer resolves and belongs to
+  the selected endpoint class.
 - Unreachable Ollama: verify Tailscale, Windows Firewall, port 11434, and Ollama's
   listen address.
 - Missing model: run `ollama pull MODEL_TAG` on the Ollama host.

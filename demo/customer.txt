@@ -1,0 +1,9 @@
+SYNTHETIC DEMO DATA — NOT A REAL CUSTOMER
+
+Customer: Avery Example
+Email: avery@example.test
+Phone: 312-555-0199
+Address: 100 Example Avenue, Test City, IL 60601
+Customer ID: DEMO-CUST-1042
+Account note: Avery is the only customer assigned to Project Blue Lantern in Test City.
+

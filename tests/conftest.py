@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 import pytest
@@ -5,6 +6,10 @@ import pytest
 from cleanroom.config.settings import Settings
 from cleanroom.models.finding import Finding
 from cleanroom.models.policy import SanitizationPolicy
+
+# Keep test collection independent of a developer's workspace .env.
+os.environ["OLLAMA_CONNECTION_MODE"] = "local"
+os.environ["OLLAMA_BASE_URL"] = "http://127.0.0.1:11434"
 
 
 @pytest.fixture
@@ -35,7 +40,9 @@ def settings(tmp_path: Path) -> Settings:
         CLEANROOM_TEMP_DIR=tmp_path / ".cleanroom" / "tmp",
         CLEANROOM_DATABASE_URL=f"sqlite:///{tmp_path / 'jobs.db'}",
         CLEANROOM_POLICY_PATH=Path("config/default-policy.yaml"),
+        OLLAMA_CONNECTION_MODE="private-network",
         OLLAMA_BASE_URL="http://100.64.0.1:11434", OLLAMA_MODEL="test:latest",
+        CLEANROOM_ALLOW_INSECURE_REMOTE_OLLAMA=True,
         CLEANROOM_FILE_STABILITY_SECONDS=0, CLEANROOM_OLLAMA_VERIFY=False)
 
 

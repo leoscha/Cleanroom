@@ -1,0 +1,11 @@
+{
+  "case": "placeholders.txt",
+  "document_type": "text",
+  "expected_count": 0,
+  "false_negatives": 0,
+  "false_positives": 3,
+  "found_count": 3,
+  "provider_error": null,
+  "source_hash": "a08c1854377e41a65ec21bf1307f1b5135a1c06e1840acfbcfede4d7b9e5df42",
+  "true_positives": 0
+}

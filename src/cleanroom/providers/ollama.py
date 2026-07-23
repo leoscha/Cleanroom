@@ -4,6 +4,11 @@ import json
 import httpx
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
+from cleanroom.config.ollama_endpoint import (
+    EndpointValidationError,
+    ValidatedEndpoint,
+    validate_redirect,
+)
 from cleanroom.models.finding import Category, Finding
 from cleanroom.models.policy import SanitizationPolicy
 from cleanroom.providers.base import ProviderError
@@ -30,18 +35,19 @@ class RawResponse(BaseModel):
 
 
 class OllamaDetectionProvider:
-    def __init__(self, base_url: str, model: str, timeout: float = 180, retries: int = 2,
+    def __init__(self, endpoint: ValidatedEndpoint, model: str, timeout: float = 180, retries: int = 2,
                  client: httpx.AsyncClient | None = None) -> None:
-        self.base_url, self.model, self.retries = base_url.rstrip("/"), model, retries
+        self.endpoint, self.model, self.retries = endpoint, model, retries
+        self.base_url = endpoint.url
         self.client = client or httpx.AsyncClient(timeout=timeout, follow_redirects=False)
 
     async def health(self) -> dict[str, object]:
         try:
-            response = await self.client.get(f"{self.base_url}/api/tags")
+            response = await self._send("GET", f"{self.base_url}/api/tags")
             response.raise_for_status()
             names = [item.get("name") for item in response.json().get("models", [])]
             return {"reachable": True, "model_installed": self.model in names, "models": names}
-        except (httpx.HTTPError, ValueError, KeyError) as exc:
+        except (httpx.HTTPError, ValueError, KeyError, EndpointValidationError, ProviderError) as exc:
             return {"reachable": False, "model_installed": False, "error": type(exc).__name__}
 
     async def detect(self, text: str, policy: SanitizationPolicy) -> list[Finding]:
@@ -60,7 +66,7 @@ class OllamaDetectionProvider:
         last: Exception | None = None
         for attempt in range(self.retries + 1):
             try:
-                response = await self.client.post(f"{self.base_url}/api/chat", json=payload)
+                response = await self._send("POST", f"{self.base_url}/api/chat", json=payload)
                 response.raise_for_status()
                 content = response.json().get("message", {}).get("content")
                 if not isinstance(content, str) or not content.strip():
@@ -75,6 +81,8 @@ class OllamaDetectionProvider:
                 raise ProviderError(
                     f"Ollama request failed with HTTP {exc.response.status_code}"
                 ) from exc
+            except EndpointValidationError as exc:
+                raise ProviderError("Ollama redirect rejected by endpoint policy") from exc
             except (json.JSONDecodeError, ValidationError, ValueError, KeyError,
                     ProviderError) as exc:
                 last = exc
@@ -85,6 +93,24 @@ class OllamaDetectionProvider:
         raise ProviderError(
             f"Ollama returned invalid structured output after {self.retries + 1} attempt(s)"
         ) from last
+
+    async def _send(self, method: str, url: str, json: object | None = None) -> httpx.Response:
+        """Follow only redirects that remain valid under the configured endpoint policy."""
+        target = url
+        active_endpoint = self.endpoint
+        for _ in range(4):
+            if json is None:
+                response = await self.client.request(method, target)
+            else:
+                response = await self.client.request(method, target, json=json)
+            if not response.is_redirect:
+                return response
+            location = response.headers.get("location")
+            if not location:
+                return response
+            active_endpoint = validate_redirect(active_endpoint, location)
+            target = active_endpoint.url
+        raise ProviderError("Ollama returned too many redirects")
 
     @staticmethod
     def _locate(text: str, raw: RawResponse) -> list[Finding]:

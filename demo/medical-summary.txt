@@ -1,0 +1,9 @@
+SYNTHETIC DEMO DATA — NOT A REAL PATIENT
+
+Patient: Morgan Example
+Date of birth: July 12, 1975
+Contact: morgan.patient@example.test or 415-555-0123
+Record locator: DEMO-MRN-9001
+Summary: Morgan discussed a fictional allergy during a demonstration visit at Example Clinic.
+Emergency contact: Riley Sample, 415-555-0188
+

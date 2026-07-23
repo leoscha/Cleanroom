@@ -1,0 +1,49 @@
+name: Bug report
+description: Report a reproducible Cleanroom problem using synthetic data only
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: "Do not include real documents, secrets, prompts, model responses, or private logs."
+  - type: input
+    id: version
+    attributes:
+      label: Cleanroom version
+      placeholder: "Cleanroom v0.2.0"
+    validations:
+      required: true
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      options: [macOS, Linux, Windows, Other]
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: Include concise steps and synthetic input if needed.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Redacted diagnostics
+      description: Paste only privacy-reviewed output from cleanroom doctor or safe reports.
+      render: shell
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Privacy check
+      options:
+        - label: I confirm this issue contains synthetic or fully sanitized data only.
+          required: true
+

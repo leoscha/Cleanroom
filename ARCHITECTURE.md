@@ -1,5 +1,8 @@
 # Cleanroom architecture decisions
 
+Cleanroom is a local-first AI Privacy Gateway that sanitizes sensitive information
+before documents are shared with AI systems.
+
 ## Boundaries
 
 Cleanroom uses a `src` layout and a layered architecture. CLI and FastAPI adapters
@@ -45,9 +48,9 @@ for coordinating the PDF handler's structural verification result.
 
 ## Main risks and controls
 
-- **Data exfiltration:** Ollama endpoints are restricted to loopback and private IP
-  addresses (including Tailscale CGNAT); redirects are disabled. No cloud provider
-  exists in the application.
+- **Data exfiltration:** Ollama defaults to loopback. Private-network and custom modes
+  validate every resolved IP; public endpoints are blocked by default and redirects
+  are followed only after revalidation. No cloud provider exists in the application.
 - **Prompt/response leakage:** document-bearing payloads are neither logged nor
   persisted. Exception text passes through a conservative secret redactor.
 - **Path traversal and links:** resolved containment, pre-resolution symlink checks,

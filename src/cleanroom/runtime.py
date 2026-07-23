@@ -32,7 +32,7 @@ def build_runtime(settings: Settings | None = None) -> Runtime:
             clean_manifests(current.temp_dir)
     except WorkspaceBusyError:
         pass
-    provider = OllamaDetectionProvider(current.ollama_base_url, current.ollama_model,
+    provider = OllamaDetectionProvider(current.validated_ollama_endpoint, current.ollama_model,
                                        current.ollama_timeout_seconds, current.ollama_max_retries)
     processing = ProcessingService(current, policy, repository, provider)
     return Runtime(current, repository, provider, processing,
