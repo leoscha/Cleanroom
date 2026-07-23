@@ -1,0 +1,4 @@
+{"findings":[
+  {"category":"PERSON_NAME","text":"Jane Example","start":0,"end":12,"required":false},
+  {"category":"INDIRECT_IDENTIFIER","text":"the only heavy-haul company beside the refinery in Texas City","start":22,"end":83,"required":false}
+]}

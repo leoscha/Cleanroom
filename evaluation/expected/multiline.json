@@ -1,0 +1,4 @@
+{"findings":[
+  {"category":"ADDRESS","text":"123 Demo Street","start":18,"end":33,"required":false},
+  {"category":"LOCATION","text":"Example City, TX 00000","start":34,"end":56,"required":false}
+]}

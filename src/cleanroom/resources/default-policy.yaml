@@ -1,0 +1,32 @@
+schema_version: 1
+name: default
+version: 1
+description: Balanced sanitization for routine local documents.
+minimum_confidence: 0.70
+default_action: ignore
+actions:
+  PERSON_NAME: replace
+  EMAIL: replace
+  PHONE: replace
+  ADDRESS: replace
+  SSN: redact
+  BANK_ACCOUNT: redact
+  CREDIT_CARD: redact
+  PASSPORT: redact
+  DRIVERS_LICENSE: redact
+  DATE_OF_BIRTH: replace
+  IP_ADDRESS: replace
+  URL: replace
+  API_KEY: redact
+  PASSWORD: redact
+  SECRET: redact
+  COMPANY_INTERNAL: replace
+  PROJECT_NAME: replace
+  LOCATION: replace
+  INDIRECT_IDENTIFIER: review
+  OTHER: ignore
+placeholders:
+  PERSON_NAME: PERSON
+  PROJECT_NAME: PROJECT
+review_behavior:
+  quarantine: true

@@ -1,0 +1,31 @@
+schema_version: 1
+name: ai-safe
+version: 1
+description: Removes personal, security, and customer-identifying information before AI upload.
+minimum_confidence: 0.70
+default_action: review
+category_confidence:
+  PERSON_NAME: 0.75
+  INDIRECT_IDENTIFIER: 0.60
+  API_KEY: 0.50
+actions:
+  PERSON_NAME: replace
+  EMAIL: replace
+  PHONE: replace
+  ADDRESS: replace
+  SSN: redact
+  PASSWORD: redact
+  API_KEY: redact
+  SECRET: redact
+  COMPANY_INTERNAL: replace
+  PROJECT_NAME: replace
+  INDIRECT_IDENTIFIER: review
+  OTHER: ignore
+placeholders:
+  PERSON_NAME: PERSON
+  PROJECT_NAME: PROJECT
+review_behavior:
+  quarantine: true
+verification_strict: true
+ollama_prompt_hints:
+  - Identify combinations of role, location, industry, and customer details.

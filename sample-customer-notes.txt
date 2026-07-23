@@ -1,0 +1,2 @@
+Customer Alice Example can be reached at alice@example.test or 312-555-0199.
+Her test account uses SSN 123-45-6789 and the documentation is at https://example.test/internal.

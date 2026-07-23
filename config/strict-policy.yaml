@@ -1,0 +1,23 @@
+schema_version: 1
+name: strict
+version: 1
+description: Conservative policy that quarantines all uncertain contextual identifiers.
+minimum_confidence: 0.55
+default_action: review
+actions:
+  EMAIL: replace
+  PHONE: replace
+  SSN: redact
+  CREDIT_CARD: redact
+  API_KEY: redact
+  PASSWORD: redact
+  SECRET: redact
+  OTHER: review
+placeholders:
+  PERSON_NAME: PERSON
+  PROJECT_NAME: PROJECT
+review_behavior:
+  quarantine: true
+verification_strict: true
+ollama_prompt_hints:
+  - Treat indirect customer and organization descriptions as sensitive.

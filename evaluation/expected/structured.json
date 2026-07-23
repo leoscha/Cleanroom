@@ -1,0 +1,7 @@
+{"findings":[
+  {"category":"EMAIL","text":"jane@example.test","start":7,"end":24,"required":true},
+  {"category":"PHONE","text":"312-555-0199","start":32,"end":44,"required":true},
+  {"category":"SSN","text":"123-45-6789","start":50,"end":61,"required":true},
+  {"category":"PASSWORD","text":"DemoOnly123!","start":73,"end":85,"required":true},
+  {"category":"API_KEY","text":"sk-abcdefghijklmnop","start":96,"end":115,"required":true}
+]}

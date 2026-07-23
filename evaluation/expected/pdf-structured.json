@@ -1,0 +1,5 @@
+{"findings":[
+  {"category":"EMAIL","text":"jane@example.test","start":29,"end":46,"required":true},
+  {"category":"PHONE","text":"312-555-0199","start":54,"end":66,"required":true},
+  {"category":"PASSWORD","text":"TestingOnly123!","start":86,"end":101,"required":true}
+]}

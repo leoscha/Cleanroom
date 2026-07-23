@@ -1,0 +1,4 @@
+{"findings":[
+  {"category":"PERSON_NAME","text":"Jane Example","start":0,"end":12,"required":false},
+  {"category":"PERSON_NAME","text":"Jane Example","start":28,"end":40,"required":false}
+]}
