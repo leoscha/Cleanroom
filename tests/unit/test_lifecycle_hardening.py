@@ -40,6 +40,7 @@ def test_windows_workspace_lock_unlocks_the_acquired_byte(
     monkeypatch.setitem(sys.modules, "msvcrt", fake_msvcrt)
     monkeypatch.setattr(workspace_lock.os, "name", "nt")
     path = tmp_path / "windows-workspace.lock"
+    path.write_text("prior owner")
     with WorkspaceLock(path):
         pass
     assert positions == [0, 0]
