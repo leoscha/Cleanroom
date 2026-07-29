@@ -4,6 +4,7 @@ import statistics
 import tempfile
 import time
 from dataclasses import dataclass
+from importlib.resources import files
 from pathlib import Path
 
 from cleanroom.detectors.merge import merge_findings
@@ -46,6 +47,55 @@ class EvaluationSummary:
     average_pdf_duration_per_page: float = 0.0
 
 
+@dataclass(frozen=True)
+class EvaluationThresholds:
+    min_precision: float = 0.70
+    min_required_recall: float = 0.95
+    min_exact_span_accuracy: float = 0.95
+    min_verification_pass_rate: float = 1.0
+    max_invalid_findings: int = 0
+    min_pdf_mapping_rate: float = 1.0
+    min_pdf_redaction_rate: float = 1.0
+    min_pdf_verification_rate: float = 1.0
+
+
+def threshold_failures(
+    summary: EvaluationSummary,
+    thresholds: EvaluationThresholds,
+) -> tuple[str, ...]:
+    """Return stable, plaintext-free quality gate failure codes."""
+    failures: list[str] = []
+    checks = (
+        (summary.precision < thresholds.min_precision, "PRECISION_BELOW_MINIMUM"),
+        (summary.required_finding_recall < thresholds.min_required_recall,
+         "REQUIRED_RECALL_BELOW_MINIMUM"),
+        (summary.exact_span_accuracy < thresholds.min_exact_span_accuracy,
+         "EXACT_SPAN_ACCURACY_BELOW_MINIMUM"),
+        (summary.verification_pass_rate < thresholds.min_verification_pass_rate,
+         "VERIFICATION_PASS_RATE_BELOW_MINIMUM"),
+        (summary.invalid_model_findings > thresholds.max_invalid_findings,
+         "INVALID_FINDINGS_ABOVE_MAXIMUM"),
+    )
+    failures.extend(code for failed, code in checks if failed)
+    if summary.pdf_case_count:
+        pdf_checks = (
+            (summary.pdf_exact_mapping_rate < thresholds.min_pdf_mapping_rate,
+             "PDF_MAPPING_RATE_BELOW_MINIMUM"),
+            (summary.pdf_successful_redaction_rate < thresholds.min_pdf_redaction_rate,
+             "PDF_REDACTION_RATE_BELOW_MINIMUM"),
+            (summary.pdf_verification_pass_rate < thresholds.min_pdf_verification_rate,
+             "PDF_VERIFICATION_RATE_BELOW_MINIMUM"),
+        )
+        failures.extend(code for failed, code in pdf_checks if failed)
+    return tuple(failures)
+
+
+def bundled_evaluation_paths() -> tuple[Path, Path]:
+    """Return evaluation fixtures shipped inside the installed package."""
+    root = Path(str(files("cleanroom.resources").joinpath("evaluation")))
+    return root / "cases", root / "expected"
+
+
 class EvaluationService:
     def __init__(self, regex: RegexDetector, chunker: ChunkedDetector,
                  policy: SanitizationPolicy,
@@ -57,7 +107,7 @@ class EvaluationService:
                        detector: str = "combined") -> EvaluationSummary:
         tp = fp = fn = required_total = required_hit = invalid = 0
         latencies: list[float] = []
-        exact_hits = category_hits = expected_total = 0
+        exact_hits = overlap_hits = category_hits = expected_total = 0
         verification_passes = quarantines = 0
         text_cases = pdf_cases = pdf_mapped = pdf_expected = 0
         pdf_redacted = pdf_verified = pdf_quarantined = pdf_mapping_failures = 0
@@ -71,6 +121,20 @@ class EvaluationService:
             )["findings"]
             cases.append((case_path.name, case_path.read_text(encoding="utf-8"),
                           expected, "text", None, 0))
+        corpus_path = cases_dir / "regression-corpus.jsonl"
+        if corpus_path.is_file():
+            for line_number, line in enumerate(
+                corpus_path.read_text(encoding="utf-8").splitlines(), start=1
+            ):
+                if not line.strip():
+                    continue
+                record = json.loads(line)
+                name = str(record["name"])
+                text = str(record["text"])
+                findings = record["findings"]
+                if not isinstance(findings, list):
+                    raise ValueError(f"invalid findings at corpus line {line_number}")
+                cases.append((name, text, findings, "text", None, 0))
         temporary_pdf: tempfile.TemporaryDirectory[str] | None = None
         if self.pdf_handler and (expected_dir / "pdf-structured.json").is_file():
             temporary_pdf = tempfile.TemporaryDirectory(prefix="cleanroom-evaluation-")
@@ -148,11 +212,29 @@ class EvaluationService:
             required_hit += len(found_keys & required_keys)
             expected_total += len(expected_keys)
             exact_hits += len(hits)
-            category_hits += len(hits)
+            for expected_item in expected:
+                expected_category = expected_item.get("category")
+                expected_start = expected_item.get("start")
+                expected_end = expected_item.get("end")
+                if not isinstance(expected_category, str) or not isinstance(expected_start, int) \
+                        or not isinstance(expected_end, int):
+                    raise ValueError(f"invalid expected finding in {case_name}")
+                overlap_hits += any(
+                    found_item.start < expected_end and expected_start < found_item.end
+                    for found_item in found
+                )
+                category_hits += any(
+                    found_item.category.value == expected_category
+                    and found_item.start < expected_end
+                    and expected_start < found_item.end
+                    for found_item in found
+                )
             case_results.append({"case": case_name, "document_type": document_type,
                 "source_hash": hashlib.sha256(text.encode()).hexdigest(),
                 "found_count": len(found), "expected_count": len(expected), "true_positives": len(hits),
                 "false_positives": len(found_keys - expected_keys), "false_negatives": len(required_keys - found_keys),
+                "verification_passed": verification.passed,
+                "quarantined": not verification.passed or review_quarantine,
                 "provider_error": provider_error, **pdf_details})
         if temporary_pdf is not None:
             temporary_pdf.cleanup()
@@ -162,7 +244,7 @@ class EvaluationService:
         summary = EvaluationSummary(precision, recall,
             2 * precision * recall / (precision + recall) if precision + recall else 0,
             required_recall, exact_hits / expected_total if expected_total else 1,
-            exact_hits / expected_total if expected_total else 1,
+            overlap_hits / expected_total if expected_total else 1,
             category_hits / expected_total if expected_total else 1, fp, fn, invalid,
             statistics.mean(latencies) if latencies else 0,
             statistics.median(latencies) if latencies else 0,
@@ -200,6 +282,8 @@ def _summary_markdown(summary: EvaluationSummary) -> str:
     return ("# Cleanroom Evaluation\n\n"
             f"- Precision: {summary.precision:.3f}\n- Recall: {summary.recall:.3f}\n"
             f"- F1: {summary.f1:.3f}\n- Required recall: {summary.required_finding_recall:.3f}\n"
+            f"- Exact-span accuracy: {summary.exact_span_accuracy:.3f}\n"
+            f"- Verification pass rate: {summary.verification_pass_rate:.3f}\n"
             f"- False positives: {summary.false_positives}\n- False negatives: {summary.false_negatives}\n"
             f"- Invalid model responses/findings: {summary.invalid_model_findings}\n"
             f"- Average latency: {summary.average_latency:.4f}s\n\n"

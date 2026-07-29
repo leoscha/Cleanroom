@@ -16,8 +16,8 @@ runner = CliRunner()
 
 def test_version() -> None:
     result = runner.invoke(commands.app, ["version"])
-    assert result.exit_code == 0
-    assert result.stdout.strip() == "Cleanroom v0.2.0"
+    assert result.exit_code == 0, result.stdout
+    assert result.stdout.strip() == "Cleanroom v0.2.1"
 
 
 def _runtime(settings, policy, provider=None) -> Runtime:
@@ -90,10 +90,11 @@ def test_policies_list_show_and_validate() -> None:
 
 
 def test_evaluate_regex_command(settings, policy, monkeypatch) -> None:
+    policy.placeholders["PERSON_NAME"] = "PERSON"
     runtime = _runtime(settings, policy)
     monkeypatch.setattr(commands, "_runtime", lambda: runtime)
     result = runner.invoke(commands.app, ["evaluate", "--detector", "regex"])
-    assert result.exit_code == 0
+    assert result.exit_code == 0, result.stdout
     assert "Evaluation thresholds passed" in result.stdout
 
 

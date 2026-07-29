@@ -1,0 +1,120 @@
+{"findings": [{"category": "EMAIL", "end": 56, "required": true, "start": 27, "text": "person0+release@example0.test"}], "name": "email-00.txt", "text": "Synthetic contact email is person0+release@example0.test for case 0."}
+{"findings": [{"category": "EMAIL", "end": 56, "required": true, "start": 27, "text": "person1+release@example1.test"}], "name": "email-01.txt", "text": "Synthetic contact email is person1+release@example1.test for case 1."}
+{"findings": [{"category": "EMAIL", "end": 56, "required": true, "start": 27, "text": "person2+release@example2.test"}], "name": "email-02.txt", "text": "Synthetic contact email is person2+release@example2.test for case 2."}
+{"findings": [{"category": "EMAIL", "end": 56, "required": true, "start": 27, "text": "person3+release@example3.test"}], "name": "email-03.txt", "text": "Synthetic contact email is person3+release@example3.test for case 3."}
+{"findings": [{"category": "EMAIL", "end": 56, "required": true, "start": 27, "text": "person4+release@example4.test"}], "name": "email-04.txt", "text": "Synthetic contact email is person4+release@example4.test for case 4."}
+{"findings": [{"category": "EMAIL", "end": 56, "required": true, "start": 27, "text": "person5+release@example5.test"}], "name": "email-05.txt", "text": "Synthetic contact email is person5+release@example5.test for case 5."}
+{"findings": [{"category": "EMAIL", "end": 56, "required": true, "start": 27, "text": "person6+release@example6.test"}], "name": "email-06.txt", "text": "Synthetic contact email is person6+release@example6.test for case 6."}
+{"findings": [{"category": "EMAIL", "end": 56, "required": true, "start": 27, "text": "person7+release@example7.test"}], "name": "email-07.txt", "text": "Synthetic contact email is person7+release@example7.test for case 7."}
+{"findings": [{"category": "EMAIL", "end": 56, "required": true, "start": 27, "text": "person8+release@example8.test"}], "name": "email-08.txt", "text": "Synthetic contact email is person8+release@example8.test for case 8."}
+{"findings": [{"category": "EMAIL", "end": 56, "required": true, "start": 27, "text": "person9+release@example9.test"}], "name": "email-09.txt", "text": "Synthetic contact email is person9+release@example9.test for case 9."}
+{"findings": [{"category": "PHONE", "end": 32, "required": true, "start": 20, "text": "312-555-0100"}], "name": "phone-00.txt", "text": "Synthetic callback: 312-555-0100."}
+{"findings": [{"category": "PHONE", "end": 32, "required": true, "start": 20, "text": "312.555.0101"}], "name": "phone-01.txt", "text": "Synthetic callback: 312.555.0101."}
+{"findings": [{"category": "PHONE", "end": 32, "required": true, "start": 20, "text": "312 555 0102"}], "name": "phone-02.txt", "text": "Synthetic callback: 312 555 0102."}
+{"findings": [{"category": "PHONE", "end": 34, "required": true, "start": 20, "text": "(312) 555-0103"}], "name": "phone-03.txt", "text": "Synthetic callback: (312) 555-0103."}
+{"findings": [{"category": "PHONE", "end": 35, "required": true, "start": 20, "text": "+1 312 555 0104"}], "name": "phone-04.txt", "text": "Synthetic callback: +1 312 555 0104."}
+{"findings": [{"category": "PHONE", "end": 35, "required": true, "start": 20, "text": "+1-312-555-0105"}], "name": "phone-05.txt", "text": "Synthetic callback: +1-312-555-0105."}
+{"findings": [{"category": "PHONE", "end": 32, "required": true, "start": 20, "text": "773-555-0106"}], "name": "phone-06.txt", "text": "Synthetic callback: 773-555-0106."}
+{"findings": [{"category": "PHONE", "end": 32, "required": true, "start": 20, "text": "847.555.0107"}], "name": "phone-07.txt", "text": "Synthetic callback: 847.555.0107."}
+{"findings": [{"category": "PHONE", "end": 32, "required": true, "start": 20, "text": "630 555 0108"}], "name": "phone-08.txt", "text": "Synthetic callback: 630 555 0108."}
+{"findings": [{"category": "PHONE", "end": 34, "required": true, "start": 20, "text": "(708) 555-0109"}], "name": "phone-09.txt", "text": "Synthetic callback: (708) 555-0109."}
+{"findings": [{"category": "SSN", "end": 33, "required": true, "start": 22, "text": "123-45-6700"}], "name": "ssn-00.txt", "text": "Synthetic SSN field = 123-45-6700."}
+{"findings": [{"category": "SSN", "end": 33, "required": true, "start": 22, "text": "123-45-6701"}], "name": "ssn-01.txt", "text": "Synthetic SSN field = 123-45-6701."}
+{"findings": [{"category": "SSN", "end": 33, "required": true, "start": 22, "text": "123-45-6702"}], "name": "ssn-02.txt", "text": "Synthetic SSN field = 123-45-6702."}
+{"findings": [{"category": "SSN", "end": 33, "required": true, "start": 22, "text": "123-45-6703"}], "name": "ssn-03.txt", "text": "Synthetic SSN field = 123-45-6703."}
+{"findings": [{"category": "SSN", "end": 33, "required": true, "start": 22, "text": "123-45-6704"}], "name": "ssn-04.txt", "text": "Synthetic SSN field = 123-45-6704."}
+{"findings": [{"category": "SSN", "end": 33, "required": true, "start": 22, "text": "123-45-6705"}], "name": "ssn-05.txt", "text": "Synthetic SSN field = 123-45-6705."}
+{"findings": [{"category": "SSN", "end": 33, "required": true, "start": 22, "text": "123-45-6706"}], "name": "ssn-06.txt", "text": "Synthetic SSN field = 123-45-6706."}
+{"findings": [{"category": "SSN", "end": 33, "required": true, "start": 22, "text": "123-45-6707"}], "name": "ssn-07.txt", "text": "Synthetic SSN field = 123-45-6707."}
+{"findings": [{"category": "SSN", "end": 33, "required": true, "start": 22, "text": "123-45-6708"}], "name": "ssn-08.txt", "text": "Synthetic SSN field = 123-45-6708."}
+{"findings": [{"category": "SSN", "end": 33, "required": true, "start": 22, "text": "123-45-6709"}], "name": "ssn-09.txt", "text": "Synthetic SSN field = 123-45-6709."}
+{"findings": [{"category": "IP_ADDRESS", "end": 38, "required": true, "start": 28, "text": "10.0.20.30"}], "name": "ipv4-00.txt", "text": "Synthetic internal address: 10.0.20.30."}
+{"findings": [{"category": "IP_ADDRESS", "end": 38, "required": true, "start": 28, "text": "10.1.20.31"}], "name": "ipv4-01.txt", "text": "Synthetic internal address: 10.1.20.31."}
+{"findings": [{"category": "IP_ADDRESS", "end": 38, "required": true, "start": 28, "text": "10.2.20.32"}], "name": "ipv4-02.txt", "text": "Synthetic internal address: 10.2.20.32."}
+{"findings": [{"category": "IP_ADDRESS", "end": 38, "required": true, "start": 28, "text": "10.3.20.33"}], "name": "ipv4-03.txt", "text": "Synthetic internal address: 10.3.20.33."}
+{"findings": [{"category": "IP_ADDRESS", "end": 38, "required": true, "start": 28, "text": "10.4.20.34"}], "name": "ipv4-04.txt", "text": "Synthetic internal address: 10.4.20.34."}
+{"findings": [{"category": "IP_ADDRESS", "end": 38, "required": true, "start": 28, "text": "10.5.20.35"}], "name": "ipv4-05.txt", "text": "Synthetic internal address: 10.5.20.35."}
+{"findings": [{"category": "IP_ADDRESS", "end": 38, "required": true, "start": 28, "text": "10.6.20.36"}], "name": "ipv4-06.txt", "text": "Synthetic internal address: 10.6.20.36."}
+{"findings": [{"category": "IP_ADDRESS", "end": 38, "required": true, "start": 28, "text": "10.7.20.37"}], "name": "ipv4-07.txt", "text": "Synthetic internal address: 10.7.20.37."}
+{"findings": [{"category": "IP_ADDRESS", "end": 38, "required": true, "start": 28, "text": "10.8.20.38"}], "name": "ipv4-08.txt", "text": "Synthetic internal address: 10.8.20.38."}
+{"findings": [{"category": "IP_ADDRESS", "end": 38, "required": true, "start": 28, "text": "10.9.20.39"}], "name": "ipv4-09.txt", "text": "Synthetic internal address: 10.9.20.39."}
+{"findings": [{"category": "URL", "end": 67, "required": true, "start": 14, "text": "https://synthetic0.example.test/private/path-0?case=0"}], "name": "url-00.txt", "text": "Synthetic URL https://synthetic0.example.test/private/path-0?case=0"}
+{"findings": [{"category": "URL", "end": 67, "required": true, "start": 14, "text": "https://synthetic1.example.test/private/path-1?case=1"}], "name": "url-01.txt", "text": "Synthetic URL https://synthetic1.example.test/private/path-1?case=1"}
+{"findings": [{"category": "URL", "end": 67, "required": true, "start": 14, "text": "https://synthetic2.example.test/private/path-2?case=2"}], "name": "url-02.txt", "text": "Synthetic URL https://synthetic2.example.test/private/path-2?case=2"}
+{"findings": [{"category": "URL", "end": 67, "required": true, "start": 14, "text": "https://synthetic3.example.test/private/path-3?case=3"}], "name": "url-03.txt", "text": "Synthetic URL https://synthetic3.example.test/private/path-3?case=3"}
+{"findings": [{"category": "URL", "end": 67, "required": true, "start": 14, "text": "https://synthetic4.example.test/private/path-4?case=4"}], "name": "url-04.txt", "text": "Synthetic URL https://synthetic4.example.test/private/path-4?case=4"}
+{"findings": [{"category": "URL", "end": 67, "required": true, "start": 14, "text": "https://synthetic5.example.test/private/path-5?case=5"}], "name": "url-05.txt", "text": "Synthetic URL https://synthetic5.example.test/private/path-5?case=5"}
+{"findings": [{"category": "URL", "end": 67, "required": true, "start": 14, "text": "https://synthetic6.example.test/private/path-6?case=6"}], "name": "url-06.txt", "text": "Synthetic URL https://synthetic6.example.test/private/path-6?case=6"}
+{"findings": [{"category": "URL", "end": 67, "required": true, "start": 14, "text": "https://synthetic7.example.test/private/path-7?case=7"}], "name": "url-07.txt", "text": "Synthetic URL https://synthetic7.example.test/private/path-7?case=7"}
+{"findings": [{"category": "URL", "end": 67, "required": true, "start": 14, "text": "https://synthetic8.example.test/private/path-8?case=8"}], "name": "url-08.txt", "text": "Synthetic URL https://synthetic8.example.test/private/path-8?case=8"}
+{"findings": [{"category": "URL", "end": 67, "required": true, "start": 14, "text": "https://synthetic9.example.test/private/path-9?case=9"}], "name": "url-09.txt", "text": "Synthetic URL https://synthetic9.example.test/private/path-9?case=9"}
+{"findings": [{"category": "CREDIT_CARD", "end": 40, "required": true, "start": 21, "text": "4100 0000 0000 0001"}], "name": "card-00.txt", "text": "Synthetic test card: 4100 0000 0000 0001."}
+{"findings": [{"category": "CREDIT_CARD", "end": 40, "required": true, "start": 21, "text": "4200 0000 0000 0000"}], "name": "card-01.txt", "text": "Synthetic test card: 4200 0000 0000 0000."}
+{"findings": [{"category": "CREDIT_CARD", "end": 40, "required": true, "start": 21, "text": "4300 0000 0000 0009"}], "name": "card-02.txt", "text": "Synthetic test card: 4300 0000 0000 0009."}
+{"findings": [{"category": "CREDIT_CARD", "end": 40, "required": true, "start": 21, "text": "4400 0000 0000 0008"}], "name": "card-03.txt", "text": "Synthetic test card: 4400 0000 0000 0008."}
+{"findings": [{"category": "CREDIT_CARD", "end": 40, "required": true, "start": 21, "text": "4500 0000 0000 0007"}], "name": "card-04.txt", "text": "Synthetic test card: 4500 0000 0000 0007."}
+{"findings": [{"category": "CREDIT_CARD", "end": 40, "required": true, "start": 21, "text": "4600 0000 0000 0006"}], "name": "card-05.txt", "text": "Synthetic test card: 4600 0000 0000 0006."}
+{"findings": [{"category": "CREDIT_CARD", "end": 40, "required": true, "start": 21, "text": "4700 0000 0000 0005"}], "name": "card-06.txt", "text": "Synthetic test card: 4700 0000 0000 0005."}
+{"findings": [{"category": "CREDIT_CARD", "end": 40, "required": true, "start": 21, "text": "4800 0000 0000 0004"}], "name": "card-07.txt", "text": "Synthetic test card: 4800 0000 0000 0004."}
+{"findings": [{"category": "CREDIT_CARD", "end": 40, "required": true, "start": 21, "text": "4900 0000 0000 0003"}], "name": "card-08.txt", "text": "Synthetic test card: 4900 0000 0000 0003."}
+{"findings": [{"category": "CREDIT_CARD", "end": 40, "required": true, "start": 21, "text": "4100 0000 0000 0001"}], "name": "card-09.txt", "text": "Synthetic test card: 4100 0000 0000 0001."}
+{"findings": [{"category": "API_KEY", "end": 48, "required": true, "start": 25, "text": "sk-synthetickey0000abcd"}], "name": "api-key-00.txt", "text": "Synthetic API credential sk-synthetickey0000abcd"}
+{"findings": [{"category": "API_KEY", "end": 48, "required": true, "start": 25, "text": "sk-synthetickey0001abcd"}], "name": "api-key-01.txt", "text": "Synthetic API credential sk-synthetickey0001abcd"}
+{"findings": [{"category": "API_KEY", "end": 48, "required": true, "start": 25, "text": "sk-synthetickey0002abcd"}], "name": "api-key-02.txt", "text": "Synthetic API credential sk-synthetickey0002abcd"}
+{"findings": [{"category": "API_KEY", "end": 48, "required": true, "start": 25, "text": "sk-synthetickey0003abcd"}], "name": "api-key-03.txt", "text": "Synthetic API credential sk-synthetickey0003abcd"}
+{"findings": [{"category": "API_KEY", "end": 45, "required": true, "start": 25, "text": "AKIA0000000000000000"}], "name": "api-key-04.txt", "text": "Synthetic API credential AKIA0000000000000000"}
+{"findings": [{"category": "API_KEY", "end": 45, "required": true, "start": 25, "text": "AKIA0000000000000001"}], "name": "api-key-05.txt", "text": "Synthetic API credential AKIA0000000000000001"}
+{"findings": [{"category": "API_KEY", "end": 45, "required": true, "start": 25, "text": "AKIA0000000000000002"}], "name": "api-key-06.txt", "text": "Synthetic API credential AKIA0000000000000002"}
+{"findings": [{"category": "API_KEY", "end": 51, "required": true, "start": 25, "text": "ghp_syntheticreleasekey000"}], "name": "api-key-07.txt", "text": "Synthetic API credential ghp_syntheticreleasekey000"}
+{"findings": [{"category": "API_KEY", "end": 51, "required": true, "start": 25, "text": "ghp_syntheticreleasekey001"}], "name": "api-key-08.txt", "text": "Synthetic API credential ghp_syntheticreleasekey001"}
+{"findings": [{"category": "API_KEY", "end": 51, "required": true, "start": 25, "text": "ghp_syntheticreleasekey002"}], "name": "api-key-09.txt", "text": "Synthetic API credential ghp_syntheticreleasekey002"}
+{"findings": [{"category": "PASSWORD", "end": 26, "required": true, "start": 11, "text": "SyntheticOnly0!"}], "name": "password-00.txt", "text": "password = SyntheticOnly0!"}
+{"findings": [{"category": "PASSWORD", "end": 26, "required": true, "start": 11, "text": "SyntheticOnly1!"}], "name": "password-01.txt", "text": "Password: \"SyntheticOnly1!\""}
+{"findings": [{"category": "PASSWORD", "end": 26, "required": true, "start": 11, "text": "SyntheticOnly2!"}], "name": "password-02.txt", "text": "PASSWORD = SyntheticOnly2!"}
+{"findings": [{"category": "PASSWORD", "end": 26, "required": true, "start": 11, "text": "SyntheticOnly3!"}], "name": "password-03.txt", "text": "password: \"SyntheticOnly3!\""}
+{"findings": [{"category": "PASSWORD", "end": 26, "required": true, "start": 11, "text": "SyntheticOnly4!"}], "name": "password-04.txt", "text": "Password = SyntheticOnly4!"}
+{"findings": [{"category": "PASSWORD", "end": 26, "required": true, "start": 11, "text": "SyntheticOnly5!"}], "name": "password-05.txt", "text": "PASSWORD: \"SyntheticOnly5!\""}
+{"findings": [{"category": "PASSWORD", "end": 26, "required": true, "start": 11, "text": "SyntheticOnly6!"}], "name": "password-06.txt", "text": "password = SyntheticOnly6!"}
+{"findings": [{"category": "PASSWORD", "end": 26, "required": true, "start": 11, "text": "SyntheticOnly7!"}], "name": "password-07.txt", "text": "Password: \"SyntheticOnly7!\""}
+{"findings": [{"category": "PASSWORD", "end": 26, "required": true, "start": 11, "text": "SyntheticOnly8!"}], "name": "password-08.txt", "text": "PASSWORD = SyntheticOnly8!"}
+{"findings": [{"category": "PASSWORD", "end": 26, "required": true, "start": 11, "text": "SyntheticOnly9!"}], "name": "password-09.txt", "text": "password: \"SyntheticOnly9!\""}
+{"findings": [{"category": "SECRET", "end": 26, "required": true, "start": 0, "text": "Bearer synthetic-token-000"}], "name": "secret-00.txt", "text": "Bearer synthetic-token-000"}
+{"findings": [{"category": "SECRET", "end": 26, "required": true, "start": 0, "text": "Bearer synthetic.token.001"}], "name": "secret-01.txt", "text": "Bearer synthetic.token.001"}
+{"findings": [{"category": "SECRET", "end": 26, "required": true, "start": 0, "text": "Bearer synthetic_token_002"}], "name": "secret-02.txt", "text": "Bearer synthetic_token_002"}
+{"findings": [{"category": "SECRET", "end": 36, "required": true, "start": 0, "text": "eyJsynthetic0.eyJpayload0.signature0"}], "name": "secret-03.txt", "text": "eyJsynthetic0.eyJpayload0.signature0"}
+{"findings": [{"category": "SECRET", "end": 36, "required": true, "start": 0, "text": "eyJsynthetic1.eyJpayload1.signature1"}], "name": "secret-04.txt", "text": "eyJsynthetic1.eyJpayload1.signature1"}
+{"findings": [{"category": "SECRET", "end": 36, "required": true, "start": 0, "text": "eyJsynthetic2.eyJpayload2.signature2"}], "name": "secret-05.txt", "text": "eyJsynthetic2.eyJpayload2.signature2"}
+{"findings": [{"category": "SECRET", "end": 45, "required": true, "start": 18, "text": "-----BEGIN PRIVATE KEY-----"}], "name": "secret-06.txt", "text": "Synthetic fixture\n-----BEGIN PRIVATE KEY-----"}
+{"findings": [{"category": "SECRET", "end": 53, "required": true, "start": 18, "text": "-----BEGIN OPENSSH PRIVATE KEY-----"}], "name": "secret-07.txt", "text": "Synthetic fixture\n-----BEGIN OPENSSH PRIVATE KEY-----"}
+{"findings": [{"category": "SECRET", "end": 26, "required": true, "start": 9, "text": "SyntheticSecret8!"}], "name": "secret-08.txt", "text": "secret = SyntheticSecret8!"}
+{"findings": [{"category": "SECRET", "end": 26, "required": true, "start": 9, "text": "SyntheticSecret9!"}], "name": "secret-09.txt", "text": "SECRET: 'SyntheticSecret9!'"}
+{"findings": [{"category": "EMAIL", "end": 28, "required": true, "start": 6, "text": "combined0@example.test"}, {"category": "PASSWORD", "end": 52, "required": true, "start": 38, "text": "CombinedOnly0!"}], "name": "combined-00.txt", "text": "Email=combined0@example.test\npassword=CombinedOnly0!"}
+{"findings": [{"category": "EMAIL", "end": 28, "required": true, "start": 6, "text": "combined1@example.test"}, {"category": "PASSWORD", "end": 52, "required": true, "start": 38, "text": "CombinedOnly1!"}], "name": "combined-01.txt", "text": "Email=combined1@example.test\npassword=CombinedOnly1!"}
+{"findings": [{"category": "EMAIL", "end": 28, "required": true, "start": 6, "text": "combined2@example.test"}, {"category": "PASSWORD", "end": 52, "required": true, "start": 38, "text": "CombinedOnly2!"}], "name": "combined-02.txt", "text": "Email=combined2@example.test\npassword=CombinedOnly2!"}
+{"findings": [{"category": "EMAIL", "end": 28, "required": true, "start": 6, "text": "combined3@example.test"}, {"category": "PASSWORD", "end": 52, "required": true, "start": 38, "text": "CombinedOnly3!"}], "name": "combined-03.txt", "text": "Email=combined3@example.test\npassword=CombinedOnly3!"}
+{"findings": [{"category": "EMAIL", "end": 28, "required": true, "start": 6, "text": "combined4@example.test"}, {"category": "PASSWORD", "end": 52, "required": true, "start": 38, "text": "CombinedOnly4!"}], "name": "combined-04.txt", "text": "Email=combined4@example.test\npassword=CombinedOnly4!"}
+{"findings": [{"category": "EMAIL", "end": 28, "required": true, "start": 6, "text": "combined5@example.test"}, {"category": "PASSWORD", "end": 52, "required": true, "start": 38, "text": "CombinedOnly5!"}], "name": "combined-05.txt", "text": "Email=combined5@example.test\npassword=CombinedOnly5!"}
+{"findings": [{"category": "EMAIL", "end": 28, "required": true, "start": 6, "text": "combined6@example.test"}, {"category": "PASSWORD", "end": 52, "required": true, "start": 38, "text": "CombinedOnly6!"}], "name": "combined-06.txt", "text": "Email=combined6@example.test\npassword=CombinedOnly6!"}
+{"findings": [{"category": "EMAIL", "end": 28, "required": true, "start": 6, "text": "combined7@example.test"}, {"category": "PASSWORD", "end": 52, "required": true, "start": 38, "text": "CombinedOnly7!"}], "name": "combined-07.txt", "text": "Email=combined7@example.test\npassword=CombinedOnly7!"}
+{"findings": [{"category": "EMAIL", "end": 28, "required": true, "start": 6, "text": "combined8@example.test"}, {"category": "PASSWORD", "end": 52, "required": true, "start": 38, "text": "CombinedOnly8!"}], "name": "combined-08.txt", "text": "Email=combined8@example.test\npassword=CombinedOnly8!"}
+{"findings": [{"category": "EMAIL", "end": 28, "required": true, "start": 6, "text": "combined9@example.test"}, {"category": "PASSWORD", "end": 52, "required": true, "start": 38, "text": "CombinedOnly9!"}], "name": "combined-09.txt", "text": "Email=combined9@example.test\npassword=CombinedOnly9!"}
+{"findings": [], "name": "negative-00.txt", "text": "Generated placeholders [EMAIL_1] and [REDACTED_SSN] are safe."}
+{"findings": [], "name": "negative-01.txt", "text": "An invalid network-like value 256.300.1.1 must not match."}
+{"findings": [], "name": "negative-02.txt", "text": "An invalid SSN-like value 000-00-0000 must not match."}
+{"findings": [], "name": "negative-03.txt", "text": "A non-Luhn number 4111111111111112 must not match."}
+{"findings": [], "name": "negative-04.txt", "text": "An incomplete address user@example has no valid email suffix."}
+{"findings": [], "name": "negative-05.txt", "text": "An unseparated phone-like value 3125550199 is unsupported."}
+{"findings": [], "name": "negative-06.txt", "text": "The password policy requires twelve characters."}
+{"findings": [], "name": "negative-07.txt", "text": "The secret ingredient is synthetic cinnamon."}
+{"findings": [], "name": "negative-08.txt", "text": "The token budget is one thousand units."}
+{"findings": [], "name": "negative-09.txt", "text": "A private key concept is not a private-key header."}
+{"findings": [], "name": "negative-10.txt", "text": "Unicode fullwidth digits \uff11\uff12\uff13\uff14\uff15 are ordinary text here."}
+{"findings": [], "name": "negative-11.txt", "text": "Version 1.2.3.4.5 contains too many dotted components."}
+{"findings": [], "name": "negative-12.txt", "text": "Release label EMAIL_1 is not itself an email."}
+{"findings": [], "name": "negative-13.txt", "text": "Call extension 555-0100 without an area code."}
+{"findings": [], "name": "negative-14.txt", "text": "Card suffix 4242 is safe on its own."}
+{"findings": [], "name": "negative-15.txt", "text": "The authentication scheme name is Bearer."}
+{"findings": [], "name": "negative-16.txt", "text": "A quoted word 'password' is documentation, not an assignment."}
+{"findings": [], "name": "negative-17.txt", "text": "A project may use sk- as a harmless textual prefix."}
+{"findings": [], "name": "negative-18.txt", "text": "Three dotted words alpha.beta.gamma are not a JWT."}
+{"findings": [], "name": "negative-19.txt", "text": "Clean synthetic prose with no identifiers at all."}

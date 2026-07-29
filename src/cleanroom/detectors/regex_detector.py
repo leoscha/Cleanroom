@@ -42,7 +42,9 @@ class RegexDetector:
             r"(?im)\bsecret\s*[:=]\s*(?:\"(?P<dq>[^\"\r\n]+)\"|'(?P<sq>[^'\r\n]+)'|(?P<raw>[^\s,;]+))"),
          "secret assignment value"),
     )
-    ipv4 = re.compile(r"(?<![\d.])(?:\d{1,3}\.){3}\d{1,3}(?![\d.])")
+    # Accept normal sentence punctuation after an address without accepting a
+    # fifth dotted component such as 1.2.3.4.5.
+    ipv4 = re.compile(r"(?<![\d.])(?:\d{1,3}\.){3}\d{1,3}(?=$|[^\d.]|\.(?=\s|$))")
 
     async def detect(self, text: str, policy: SanitizationPolicy) -> list[Finding]:
         findings: list[Finding] = []

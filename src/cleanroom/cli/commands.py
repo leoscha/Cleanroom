@@ -30,7 +30,12 @@ from cleanroom.files.pdf_handler import PdfDocumentHandler, PdfError, create_syn
 from cleanroom.files.text_handler import validate_input
 from cleanroom.models.job import JobStatus
 from cleanroom.runtime import Runtime, build_runtime
-from cleanroom.services.evaluation_service import EvaluationService
+from cleanroom.services.evaluation_service import (
+    EvaluationService,
+    EvaluationThresholds,
+    bundled_evaluation_paths,
+    threshold_failures,
+)
 from cleanroom.services.verification_service import VerificationService
 from cleanroom.watchers.folder_watcher import watch_folder
 
@@ -361,8 +366,9 @@ def evaluate(
     service = EvaluationService(runtime.processing.regex, runtime.processing.chunker,
         runtime.processing.policy,
         pdf_handler if isinstance(pdf_handler, PdfDocumentHandler) else None)
+    cases_dir, expected_dir = bundled_evaluation_paths()
     try:
-        summary = asyncio.run(service.evaluate(Path("evaluation/cases"), Path("evaluation/expected"),
+        summary = asyncio.run(service.evaluate(cases_dir, expected_dir,
                                                Path("evaluation-results"), detector))
     except Exception as exc:
         console.print(f"[red]Evaluation failed safely ({type(exc).__name__}).[/]")
@@ -370,15 +376,25 @@ def evaluate(
         raise typer.Exit(1) from None
     console.print(f"Precision: {summary.precision:.3f}\nRecall: {summary.recall:.3f}\n"
                   f"F1: {summary.f1:.3f}\nRequired recall: {summary.required_finding_recall:.3f}\n"
+                  f"Exact-span accuracy: {summary.exact_span_accuracy:.3f}\n"
+                  f"Verification pass rate: {summary.verification_pass_rate:.3f}\n"
                   f"Invalid model responses/findings: {summary.invalid_model_findings}\n"
                   f"PDF mapping rate: {summary.pdf_exact_mapping_rate:.3f}\n"
                   f"PDF redaction rate: {summary.pdf_successful_redaction_rate:.3f}")
-    if (summary.required_finding_recall < runtime.settings.eval_min_required_recall
-            or summary.precision < runtime.settings.eval_min_precision
-            or summary.invalid_model_findings > 0):
+    failures = threshold_failures(summary, EvaluationThresholds(
+        min_precision=runtime.settings.eval_min_precision,
+        min_required_recall=runtime.settings.eval_min_required_recall,
+        min_exact_span_accuracy=runtime.settings.eval_min_exact_span_accuracy,
+        min_verification_pass_rate=runtime.settings.eval_min_verification_pass_rate,
+        max_invalid_findings=runtime.settings.eval_max_invalid_findings,
+        min_pdf_mapping_rate=runtime.settings.eval_min_pdf_mapping_rate,
+        min_pdf_redaction_rate=runtime.settings.eval_min_pdf_redaction_rate,
+        min_pdf_verification_rate=runtime.settings.eval_min_pdf_verification_rate,
+    ))
+    if failures:
         console.print("[red]Evaluation thresholds failed.[/]")
-        if summary.invalid_model_findings:
-            console.print("Ollama returned invalid output for one or more cases; see evaluation-results/.")
+        console.print("Failed gates: " + ", ".join(failures))
+        console.print("See evaluation-results/ for privacy-safe counts and metrics.")
         raise typer.Exit(1)
     console.print("[green]Evaluation thresholds passed.[/]")
 

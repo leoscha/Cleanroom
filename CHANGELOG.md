@@ -3,6 +3,31 @@
 All notable changes to Cleanroom are documented here. This project follows
 [Semantic Versioning](https://semver.org/).
 
+## [0.2.1] — 2026-07-29 — Text Foundation Stabilization
+
+### Added
+
+- A reproducible 120-case synthetic regression corpus covering deterministic
+  identifiers, assignments, combined findings, boundary cases, and safe negatives.
+- Release gates for exact spans, verification, invalid findings, and PDF mapping,
+  redaction, and verification in addition to precision and required recall.
+- Cross-platform CI tests on Linux, macOS, and Windows, plus deterministic evaluation
+  and clean-wheel installation jobs.
+- Privacy-safe per-case verification and quarantine results in evaluation reports.
+
+### Fixed
+
+- IPv4 addresses immediately followed by sentence punctuation are detected without
+  accepting a fifth dotted component.
+
+### Changed
+
+- `cleanroom evaluate` prints every enforced quality metric and stable failure codes.
+- The bundled evaluation suite now contains 128 cases: 120 generated regression
+  cases, seven focused text fixtures, and one generated text-based PDF.
+
+No configuration or database migration is required from v0.2.0.
+
 ## [0.2.0] — 2026-07-22 — Text Foundation
 
 ### Added
@@ -34,4 +59,4 @@ deployments. Remote plain HTTP also requires
 [migration notes](docs/migration-v0.2.0.md).
 
 [0.2.0]: https://github.com/leoscha/Cleanroom/releases/tag/v0.2.0
-
+[0.2.1]: https://github.com/leoscha/Cleanroom/releases/tag/v0.2.1

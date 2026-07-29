@@ -1,5 +1,27 @@
 # Upgrade guide
 
+## Upgrade to v0.2.1
+
+v0.2.1 has no configuration or database migration. Back up the workspace, upgrade the
+package, then run the readiness and deterministic quality gates:
+
+```bash
+python -m pip install --upgrade cleanroom-local==0.2.1
+cleanroom version
+cleanroom doctor
+cleanroom evaluate --detector regex
+```
+
+Expected version output:
+
+```text
+Cleanroom v0.2.1
+```
+
+Source-checkout users can fetch and check out the `v0.2.1` tag before reinstalling.
+The evaluation dataset is now included in the package, so the same suite runs from an
+installed wheel and a source checkout.
+
 ## Upgrade to v0.2.0
 
 1. Back up `.env`, custom policies, and the workspace database.
@@ -31,5 +53,5 @@ Contributors can install `.[dev]` and run `make check` after upgrading.
 ## Rollback
 
 Stop watchers and API processes, check out the earlier revision, and reinstall it.
-v0.2.0 does not require a destructive database migration. Preserve the workspace and
+Neither v0.2.0 nor v0.2.1 requires a destructive database migration. Preserve the workspace and
 database until rollback validation is complete.

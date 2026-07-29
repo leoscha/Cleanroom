@@ -58,6 +58,18 @@ class Settings(BaseSettings):
     )
     eval_min_required_recall: float = Field(.95, ge=0, le=1, alias="CLEANROOM_EVAL_MIN_REQUIRED_RECALL")
     eval_min_precision: float = Field(.70, ge=0, le=1, alias="CLEANROOM_EVAL_MIN_PRECISION")
+    eval_min_exact_span_accuracy: float = Field(.95, ge=0, le=1,
+        alias="CLEANROOM_EVAL_MIN_EXACT_SPAN_ACCURACY")
+    eval_min_verification_pass_rate: float = Field(1, ge=0, le=1,
+        alias="CLEANROOM_EVAL_MIN_VERIFICATION_PASS_RATE")
+    eval_max_invalid_findings: int = Field(0, ge=0,
+        alias="CLEANROOM_EVAL_MAX_INVALID_FINDINGS")
+    eval_min_pdf_mapping_rate: float = Field(1, ge=0, le=1,
+        alias="CLEANROOM_EVAL_MIN_PDF_MAPPING_RATE")
+    eval_min_pdf_redaction_rate: float = Field(1, ge=0, le=1,
+        alias="CLEANROOM_EVAL_MIN_PDF_REDACTION_RATE")
+    eval_min_pdf_verification_rate: float = Field(1, ge=0, le=1,
+        alias="CLEANROOM_EVAL_MIN_PDF_VERIFICATION_RATE")
     log_level: str = Field("INFO", alias="CLEANROOM_LOG_LEVEL")
     api_host: str = Field("127.0.0.1", alias="CLEANROOM_API_HOST")
 

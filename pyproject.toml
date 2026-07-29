@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "cleanroom-local"
-version = "0.2.0"
+version = "0.2.1"
 description = "A local-first AI Privacy Gateway for sanitizing sensitive information before AI use"
 readme = "README.md"
 requires-python = ">=3.12"
@@ -39,11 +39,15 @@ cleanroom = "cleanroom.main:app"
 where = ["src"]
 
 [tool.setuptools.package-data]
-"cleanroom.resources" = ["*.yaml", "*.example"]
+"cleanroom.resources" = [
+  "*.yaml", "*.example", "evaluation/cases/*.txt", "evaluation/cases/*.jsonl",
+  "evaluation/expected/*.json",
+]
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 testpaths = ["tests"]
+pythonpath = ["."]
 markers = ["live_ollama: optional test requiring an explicitly enabled private Ollama endpoint"]
 
 [tool.ruff]

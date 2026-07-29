@@ -31,6 +31,13 @@ def test_regex_categories_and_luhn(policy) -> None:
     assert not luhn_valid("4111 1111 1111 1112")
 
 
+def test_ipv4_accepts_sentence_punctuation_but_rejects_fifth_component(policy) -> None:
+    text = "Internal 10.0.20.30. Invalid 1.2.3.4.5 remains."
+    values = asyncio.run(RegexDetector().detect(text, policy))
+    addresses = [item.text for item in values if item.category == Category.IP_ADDRESS]
+    assert addresses == ["10.0.20.30"]
+
+
 def test_merge_dedup_overlap_priority_and_invalid_offset() -> None:
     text = "secret@example.com"
     email = finding(text, Category.EMAIL, 0, "regex", 1)

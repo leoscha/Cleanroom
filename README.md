@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/leoscha/Cleanroom/releases/tag/v0.2.0"><img src="https://img.shields.io/badge/version-v0.2.0-2563eb" alt="Version v0.2.0"></a>
+  <a href="https://github.com/leoscha/Cleanroom/releases/tag/v0.2.1"><img src="https://img.shields.io/badge/version-v0.2.1-2563eb" alt="Version v0.2.1"></a>
   <a href="https://github.com/leoscha/Cleanroom/actions/workflows/ci.yml"><img src="https://github.com/leoscha/Cleanroom/actions/workflows/ci.yml/badge.svg" alt="CI status"></a>
   <img src="https://img.shields.io/badge/python-3.12%2B-334155" alt="Python 3.12 or newer">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache--2.0-0ea5e9" alt="Apache-2.0 license"></a>
@@ -183,7 +183,7 @@ mypy src
 Read the [contribution guide](.github/CONTRIBUTING.md), [Code of
 Conduct](.github/CODE_OF_CONDUCT.md), and [security reporting
 policy](.github/SECURITY.md). Release information lives in the
-[changelog](CHANGELOG.md) and [v0.2.0 notes](docs/releases/v0.2.0.md).
+[changelog](CHANGELOG.md) and [v0.2.1 notes](docs/releases/v0.2.1.md).
 
 ## License
 

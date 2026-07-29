@@ -14,7 +14,7 @@ from cleanroom.config.settings import Settings
 from cleanroom.detectors.regex_detector import RegexDetector
 from cleanroom.providers.ollama import OllamaDetectionProvider
 from cleanroom.services.chunking import ChunkedDetector
-from cleanroom.services.evaluation_service import EvaluationService
+from cleanroom.services.evaluation_service import EvaluationService, bundled_evaluation_paths
 
 
 async def benchmark(model: str, output: Path, hardware: str) -> None:
@@ -29,13 +29,14 @@ async def benchmark(model: str, output: Path, hardware: str) -> None:
         settings.max_chunks_per_file,
     )
     service = EvaluationService(RegexDetector(), chunker, policy)
-    cases = sorted(Path("evaluation/cases").glob("*.txt"))
+    cases_dir, expected_dir = bundled_evaluation_paths()
+    cases = sorted(cases_dir.glob("*.txt"))
     character_count = sum(len(path.read_text(encoding="utf-8")) for path in cases)
     await provider.detect("Synthetic warm-up sentence with no identifiers.", policy)
     started = time.monotonic()
     try:
         summary = await service.evaluate(
-            Path("evaluation/cases"), Path("evaluation/expected"), output, "combined"
+            cases_dir, expected_dir, output, "combined"
         )
     finally:
         await provider.client.aclose()
@@ -54,7 +55,7 @@ async def benchmark(model: str, output: Path, hardware: str) -> None:
         "hardware": hardware,
         "operating_system": platform.platform(),
         "ollama_version": ollama_version,
-        "dataset": "evaluation/cases/*.txt",
+        "dataset": "cleanroom.resources/evaluation/cases",
         "dataset_revision": "v0.2.0",
         "total_characters": character_count,
         "wall_time_seconds": elapsed,
