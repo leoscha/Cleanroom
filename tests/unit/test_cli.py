@@ -76,7 +76,8 @@ def test_scan_status_show_config_and_demo(settings, policy, monkeypatch) -> None
     assert "100.64.0.1" in configured.stdout
 
     demo = runner.invoke(commands.app, ["demo", "--run"])
-    assert demo.exit_code == 0 and "fake demonstration data" in demo.stdout
+    assert demo.exit_code == 0
+    assert "All values are fake demonstration data." in " ".join(demo.stdout.split())
     assert list(settings.spotless_dir.glob("cleanroom-demo*-clean.txt"))
 
 
