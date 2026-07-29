@@ -19,6 +19,8 @@ verification quality take priority over dates.
 
 - Local review experience for quarantined findings and policy decisions.
 - Privacy-safe job navigation and operator approval flows.
+- The loopback-only metadata dashboard is implemented; audited approval transitions
+  remain the release gate.
 
 ## v0.5 — OCR
 
@@ -29,4 +31,3 @@ verification quality take priority over dates.
 
 - Stable gateway contracts, deployment guidance, and production hardening.
 - Broader document workflows with auditable policy enforcement.
-

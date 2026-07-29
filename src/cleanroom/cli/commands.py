@@ -8,6 +8,7 @@ from typing import Annotated
 from urllib.parse import urlsplit
 
 import typer
+import uvicorn
 from pydantic import ValidationError
 from rich.console import Console
 from rich.table import Table
@@ -59,6 +60,20 @@ def _runtime() -> Runtime:
 def version() -> None:
     """Print the installed Cleanroom version."""
     console.print(f"Cleanroom v{__version__}")
+
+
+@app.command("review")
+def review_ui(
+    port: Annotated[int, typer.Option(min=1024, max=65535)] = 8765,
+) -> None:
+    """Run the loopback-only privacy-safe review dashboard."""
+    from cleanroom.api.app import create_app
+
+    runtime = _runtime()
+    console.print(f"Review dashboard: http://{runtime.settings.api_host}:{port}/review")
+    console.print("Privacy-safe metadata only; approval actions are not enabled yet.")
+    uvicorn.run(create_app(runtime), host=runtime.settings.api_host, port=port,
+                access_log=False, log_level=runtime.settings.log_level.lower())
 
 
 @app.command()

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "cleanroom-local"
-version = "0.3.0"
+version = "0.4.0.dev0"
 description = "A local-first AI Privacy Gateway for sanitizing sensitive information before AI use"
 readme = "README.md"
 requires-python = ">=3.12"

@@ -17,7 +17,7 @@ runner = CliRunner()
 def test_version() -> None:
     result = runner.invoke(commands.app, ["version"])
     assert result.exit_code == 0, result.stdout
-    assert result.stdout.strip() == "Cleanroom v0.3.0"
+    assert result.stdout.strip() == "Cleanroom v0.4.0.dev0"
 
 
 def _runtime(settings, policy, provider=None) -> Runtime:
@@ -55,6 +55,21 @@ def test_doctor_success_and_failed_ollama(settings, policy, monkeypatch) -> None
     monkeypatch.setattr(commands, "_runtime", lambda: failed_runtime)
     failed = runner.invoke(commands.app, ["doctor"])
     assert failed.exit_code == 1 and "Ollama unreachable" in failed.stdout
+
+
+def test_review_command_binds_to_configured_loopback(settings, policy, monkeypatch) -> None:
+    runtime = _runtime(settings, policy)
+    monkeypatch.setattr(commands, "_runtime", lambda: runtime)
+    called = {}
+
+    def run(app, **options):
+        called.update(options)
+
+    monkeypatch.setattr(commands.uvicorn, "run", run)
+    result = runner.invoke(commands.app, ["review", "--port", "8765"])
+    assert result.exit_code == 0
+    assert called["host"] == "127.0.0.1" and called["port"] == 8765
+    assert "approval actions are not enabled" in result.stdout
 
 
 def test_scan_status_show_config_and_demo(settings, policy, monkeypatch) -> None:

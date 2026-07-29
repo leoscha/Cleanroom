@@ -91,12 +91,15 @@ cleanroom watch
 cleanroom process dirty/customer.txt
 cleanroom verify spotless/customer-clean.txt
 cleanroom retry
+cleanroom review
 cleanroom config
 cleanroom policies
 cleanroom evaluate --detector combined
 ```
 
 See runnable configuration and policy examples in [`examples/`](examples/).
+The development review dashboard and its approval security gates are documented in
+[docs/review-ui.md](docs/review-ui.md).
 
 ## Screenshots
 
@@ -156,7 +159,8 @@ claim of forensic irrecoverability against every PDF parser.
 - OCR and image-only document analysis are not supported.
 - Processing is sequential and designed for one local workspace.
 - Cloud inference and public Ollama deployments are not normal supported defaults.
-- There is no review UI or multi-user authorization model yet.
+- The local review dashboard is metadata-only; approval actions and multi-user
+  authorization are not implemented yet.
 - Live results vary by model build and hardware; automated tests use mocked Ollama
   responses unless the optional live test is explicitly enabled.
 

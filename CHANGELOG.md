@@ -3,6 +3,17 @@
 All notable changes to Cleanroom are documented here. This project follows
 [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+
+- A loopback-only, privacy-safe review queue foundation at `cleanroom review`.
+- Server-rendered quarantined-job navigation with strict output escaping, no external
+  assets, no-store responses, and a restrictive Content Security Policy.
+
+Approval mutations remain intentionally disabled until decision persistence, fresh
+verification, CSRF protection, and auditable state transitions are implemented.
+
 ## [0.3.0] — 2026-07-29 — Native PDF
 
 ### Added

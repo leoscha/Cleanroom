@@ -32,3 +32,12 @@ and Quick Start from a clean clone. Record any exception in the release notes.
 - Local validation: 100 passed, 1 opt-in live-Ollama test skipped; Ruff and mypy passed
 - Deterministic gate: precision 1.000, required recall 1.000, exact-span accuracy 0.952,
   verification 1.000, and generated-PDF mapping/redaction/verification 1.000
+
+## v0.3.0 record
+
+- Release: [Native PDF](https://github.com/leoscha/Cleanroom/releases/tag/v0.3.0)
+- Cross-platform release CI: [passed](https://github.com/leoscha/Cleanroom/actions/runs/30480480998)
+- Release workflow: [passed](https://github.com/leoscha/Cleanroom/actions/runs/30480614058)
+- Local validation: 105 passed, 1 opt-in live-Ollama test skipped; Ruff and mypy passed
+- PDF gate: three generated layouts with mapping, redaction, structural verification,
+  metadata sanitization, and original-absence checks passing
