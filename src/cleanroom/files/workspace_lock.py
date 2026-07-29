@@ -42,6 +42,7 @@ class WorkspaceLock:
         handle = self.handle
         if os.name == "nt":
             import msvcrt
+            handle.seek(0)
             msvcrt.locking(handle.fileno(), msvcrt.LK_UNLCK, 1)  # type: ignore[attr-defined]
         else:
             import fcntl
