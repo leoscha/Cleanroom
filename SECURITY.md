@@ -34,7 +34,8 @@ policies for high-risk documents.
 
 - AI detection is probabilistic; false negatives and false positives remain possible.
 - Human review may still be required for ambiguous or high-impact material.
-- OCR and image-only PDFs are not supported.
+- OCR and image sanitization are not supported. PDFs containing any images are
+  rejected by default; the explicit preservation override cannot inspect their pixels.
 - Unsupported formats are rejected rather than silently or partially processed.
 - Supported PDF checks do not establish forensic irrecoverability against every parser.
 - Cleanroom cannot protect data on a compromised host or malicious Ollama server.

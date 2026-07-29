@@ -5,6 +5,12 @@ It does not perform OCR. Image-only and likely scanned documents are quarantined
 `LIKELY_SCANNED_PDF`; use `cleanroom inspect dirty/example.pdf` to check a file without
 printing its text.
 
+PDF images are rejected by default with `PDF_IMAGES_WITHOUT_OCR`, even when a page
+also contains extractable text, because Cleanroom cannot determine whether pixels
+contain sensitive information. Advanced users may explicitly set
+`CLEANROOM_PDF_REJECT_IMAGES=false` for documents whose images have been reviewed and
+are known to be nonsensitive. This override does not add OCR or image sanitization.
+
 > Cleanroom verifies that redacted values are absent from supported extraction paths,
 > but this MVP does not claim forensic sanitization against every possible PDF
 > recovery technique.
@@ -59,6 +65,8 @@ contain only safe counts, structure flags, hashes, mapping warnings, and reason 
 ## Current limitations
 
 - No OCR or sanitization of pixels in scanned pages.
+- PDFs containing images fail closed by default; opting in to preserve reviewed images
+  transfers responsibility for their pixel content to the operator.
 - Complex encodings, damaged font maps, unusual writing directions, or ambiguous
   geometry may be quarantined.
 - Replacement labels do not reflow surrounding PDF layout.

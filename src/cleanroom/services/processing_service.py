@@ -315,6 +315,7 @@ class ProcessingService:
             "javascript_found": inspection.javascript_found,
             "forms_found": inspection.forms_found,
             "external_actions_found": inspection.external_actions_found,
+            "image_count": inspection.image_count,
             "appears_scanned": inspection.appears_scanned,
         }
 

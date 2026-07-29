@@ -9,8 +9,8 @@ cleanroom evaluate --detector ollama --model gemma3:4b
 ```
 
 The bundled suite includes focused fixtures, a reproducible 120-case synthetic
-regression corpus, and a generated text-based PDF. It reports precision, recall,
-exact-span accuracy, verification rate, invalid model findings, and PDF mapping,
+regression corpus, and three generated text-based PDF compatibility fixtures. It
+reports precision, recall, exact-span accuracy, verification rate, invalid model findings, and PDF mapping,
 redaction, and verification metrics. Reports contain hashes and counts, never matched
 plaintext.
 

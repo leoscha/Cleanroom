@@ -1,5 +1,36 @@
 # Upgrade guide
 
+## Upgrade to v0.3.0
+
+Back up the workspace, upgrade the package, and run the readiness and deterministic
+quality gates:
+
+```bash
+python -m pip install --upgrade cleanroom-local==0.3.0
+cleanroom version
+cleanroom doctor
+cleanroom evaluate --detector regex
+```
+
+Expected version output:
+
+```text
+Cleanroom v0.3.0
+```
+
+There is no database migration. The secure PDF default has changed: PDFs containing
+images are rejected with `PDF_IMAGES_WITHOUT_OCR`, even when they also contain text.
+Cleanroom cannot inspect image pixels until OCR support exists. If an operator has
+independently reviewed every image and accepts responsibility for preserving it, the
+behavior can be explicitly overridden:
+
+```env
+CLEANROOM_PDF_REJECT_IMAGES=false
+```
+
+Do not use this override for scans, screenshots, photographs of documents, or any
+image that might contain sensitive information.
+
 ## Upgrade to v0.2.1
 
 v0.2.1 has no configuration or database migration. Back up the workspace, upgrade the

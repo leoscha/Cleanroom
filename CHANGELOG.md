@@ -3,6 +3,27 @@
 All notable changes to Cleanroom are documented here. This project follows
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.0] — 2026-07-29 — Native PDF
+
+### Added
+
+- Multipage and repeated-value PDF evaluation fixtures with separate mapping,
+  redaction, and verification gates.
+- Default rejection of PDF images that cannot be inspected without OCR, with an
+  explicit operator override for previously reviewed nonsensitive images.
+
+### Fixed
+
+- Windows workspace locks now consistently acquire and release byte zero even after
+  the lock file has recorded a prior process identifier.
+
+### Changed
+
+- Text-based PDF support graduates from early capability to a supported format.
+- PDFs containing images now fail closed by default because Cleanroom cannot inspect
+  or sanitize their pixels without OCR. Reviewed images can be preserved only through
+  the explicit `CLEANROOM_PDF_REJECT_IMAGES=false` override.
+
 ## [0.2.1] — 2026-07-29 — Text Foundation Stabilization
 
 ### Added
@@ -60,3 +81,4 @@ deployments. Remote plain HTTP also requires
 
 [0.2.0]: https://github.com/leoscha/Cleanroom/releases/tag/v0.2.0
 [0.2.1]: https://github.com/leoscha/Cleanroom/releases/tag/v0.2.1
+[0.3.0]: https://github.com/leoscha/Cleanroom/releases/tag/v0.3.0

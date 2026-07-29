@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "cleanroom-local"
-version = "0.2.1"
+version = "0.3.0"
 description = "A local-first AI Privacy Gateway for sanitizing sensitive information before AI use"
 readme = "README.md"
 requires-python = ">=3.12"
@@ -26,7 +26,8 @@ dependencies = [
 [project.optional-dependencies]
 dev = [
   "mypy>=1.11", "Pillow>=11,<13", "pytest>=8", "pytest-asyncio>=0.24",
-  "pytest-github-actions-annotate-failures>=0.3,<1", "ruff>=0.7", "types-PyYAML>=6",
+  "pytest-github-actions-annotate-failures>=0.3,<1", "reportlab>=4,<5", "ruff>=0.7",
+  "types-PyYAML>=6",
 ]
 
 [project.urls]

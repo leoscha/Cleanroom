@@ -3,6 +3,7 @@ from pathlib import Path
 
 import pymupdf as fitz
 import pytest
+from reportlab.pdfgen import canvas
 
 from cleanroom.files.pdf_handler import (
     PdfDocumentHandler,
@@ -10,6 +11,7 @@ from cleanroom.files.pdf_handler import (
     PdfMalformedError,
     PdfMappingError,
     PdfUnsupportedError,
+    create_synthetic_pdf,
 )
 from cleanroom.files.registry import DocumentHandlerRegistry, UnsupportedExtensionError
 from cleanroom.files.text_handler import TextDocumentHandler
@@ -219,8 +221,80 @@ def test_image_only_pdf_is_classified_as_scanned(settings, policy, tmp_path: Pat
     handler = PdfDocumentHandler(policy, settings)
     inspection = handler.inspect(source)
     assert inspection.appears_scanned and "LIKELY_SCANNED_PDF" in inspection.rejection_codes
+    assert "PDF_IMAGES_WITHOUT_OCR" in inspection.rejection_codes
     with pytest.raises(PdfUnsupportedError):
         handler.extract(source)
+
+
+def test_mixed_text_and_images_require_explicit_ocr_risk_override(
+    settings, policy, tmp_path: Path
+) -> None:
+    source = tmp_path / "mixed.pdf"
+    document = fitz.open()  # type: ignore[no-untyped-call]
+    try:
+        page = document.new_page()
+        page.insert_text((72, 72), "Synthetic text page with enough extractable content")
+        pixmap = fitz.Pixmap(fitz.csRGB, fitz.IRect(0, 0, 20, 20), False)
+        pixmap.clear_with(240)
+        page.insert_image(fitz.Rect(72, 100, 150, 180), pixmap=pixmap)  # type: ignore[no-untyped-call]
+        document.save(source)  # type: ignore[no-untyped-call]
+    finally:
+        document.close()  # type: ignore[no-untyped-call]
+    handler = PdfDocumentHandler(policy, settings)
+    inspection = handler.inspect(source)
+    assert not inspection.appears_scanned
+    assert "PDF_IMAGES_WITHOUT_OCR" in inspection.rejection_codes
+    settings.pdf_reject_images = False
+    opted_in = PdfDocumentHandler(policy, settings).inspect(source)
+    assert opted_in.supported
+
+
+@pytest.mark.parametrize("variant,page_count,needle,count", [
+    ("multipage", 2, "multi@example.test", 1),
+    ("repeated", 1, "repeat@example.test", 2),
+])
+def test_synthetic_pdf_compatibility_variants(
+    settings, policy, tmp_path: Path, variant: str, page_count: int,
+    needle: str, count: int,
+) -> None:
+    source = tmp_path / f"{variant}.pdf"
+    create_synthetic_pdf(source, variant)
+    extracted = PdfDocumentHandler(policy, settings).extract(source)
+    assert extracted.page_count == page_count
+    assert extracted.text.count(needle) == count
+
+
+def test_extracts_and_redacts_reportlab_generated_pdf(
+    settings, policy, tmp_path: Path
+) -> None:
+    source = tmp_path / "reportlab.pdf"
+    producer = canvas.Canvas(str(source))
+    producer.drawString(72, 720, "Synthetic ReportLab document with enough text")
+    producer.drawString(72, 700, "Email: reportlab@example.test")
+    producer.showPage()
+    producer.save()
+    handler = PdfDocumentHandler(policy, settings)
+    extracted = handler.extract(source)
+    target = finding("reportlab@example.test", extracted.text, Category.EMAIL)
+    output = handler.write(handler.sanitize(extracted, [target]), tmp_path / "reportlab-clean.pdf")
+    assert handler.verify_output(output, 1)["passed"] is True
+    assert handler.verify_original_absence(output, [target])["passed"] is True
+
+
+def test_rotated_text_mapping_and_redaction(settings, policy, tmp_path: Path) -> None:
+    source = tmp_path / "rotated.pdf"
+    document = fitz.open()  # type: ignore[no-untyped-call]
+    try:
+        page = document.new_page()
+        page.insert_text((100, 500), "Synthetic rotated@example.test record", rotate=90)
+        document.save(source)  # type: ignore[no-untyped-call]
+    finally:
+        document.close()  # type: ignore[no-untyped-call]
+    handler = PdfDocumentHandler(policy, settings)
+    extracted = handler.extract(source)
+    target = finding("rotated@example.test", extracted.text, Category.EMAIL)
+    output = handler.write(handler.sanitize(extracted, [target]), tmp_path / "rotated-clean.pdf")
+    assert handler.verify_original_absence(output, [target])["passed"] is True
 
 
 def test_malformed_and_encrypted_pdfs_fail_closed(settings, policy, tmp_path: Path) -> None:

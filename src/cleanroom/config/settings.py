@@ -48,6 +48,7 @@ class Settings(BaseSettings):
     pdf_reject_forms: bool = Field(True, alias="CLEANROOM_PDF_REJECT_FORMS")
     pdf_reject_embedded_files: bool = Field(True, alias="CLEANROOM_PDF_REJECT_EMBEDDED_FILES")
     pdf_reject_javascript: bool = Field(True, alias="CLEANROOM_PDF_REJECT_JAVASCRIPT")
+    pdf_reject_images: bool = Field(True, alias="CLEANROOM_PDF_REJECT_IMAGES")
     pdf_min_text_chars_per_page: int = Field(20, ge=1,
         alias="CLEANROOM_PDF_MIN_TEXT_CHARS_PER_PAGE")
     pdf_mapping_min_confidence: float = Field(.95, ge=0, le=1,

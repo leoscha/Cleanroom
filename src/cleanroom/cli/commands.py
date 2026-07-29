@@ -379,6 +379,7 @@ def evaluate(
                   f"Exact-span accuracy: {summary.exact_span_accuracy:.3f}\n"
                   f"Verification pass rate: {summary.verification_pass_rate:.3f}\n"
                   f"Invalid model responses/findings: {summary.invalid_model_findings}\n"
+                  f"PDF cases: {summary.pdf_case_count}\n"
                   f"PDF mapping rate: {summary.pdf_exact_mapping_rate:.3f}\n"
                   f"PDF redaction rate: {summary.pdf_successful_redaction_rate:.3f}")
     failures = threshold_failures(summary, EvaluationThresholds(

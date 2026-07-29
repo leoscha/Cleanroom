@@ -103,6 +103,8 @@ class PdfDocumentHandler:
         codes: list[str] = []
         if scanned:
             codes.append("LIKELY_SCANNED_PDF")
+        if image_count and self.settings.pdf_reject_images:
+            codes.append("PDF_IMAGES_WITHOUT_OCR")
         if embedded and self.settings.pdf_reject_embedded_files:
             codes.append("EMBEDDED_FILES")
         if form_count and self.settings.pdf_reject_forms:
@@ -431,14 +433,32 @@ class PdfDocumentHandler:
         return digest.hexdigest()
 
 
-def create_synthetic_pdf(path: Path) -> None:
+def create_synthetic_pdf(path: Path, variant: str = "structured") -> None:
     document = fitz.open()  # type: ignore[no-untyped-call]
     try:
-        page = document.new_page(width=612, height=792)
-        page.insert_textbox(fitz.Rect(72, 72, 540, 240),  # type: ignore[no-untyped-call]
-            "Synthetic Test Fields\n\nEmail: jane@example.test\n"
-            "Phone: 312-555-0199\nSupport password = TestingOnly123!",
-            fontname="helv", fontsize=12, lineheight=1.4)
+        if variant == "structured":
+            page = document.new_page(width=612, height=792)
+            page.insert_textbox(fitz.Rect(72, 72, 540, 240),  # type: ignore[no-untyped-call]
+                "Synthetic Test Fields\n\nEmail: jane@example.test\n"
+                "Phone: 312-555-0199\nSupport password = TestingOnly123!",
+                fontname="helv", fontsize=12, lineheight=1.4)
+        elif variant == "multipage":
+            first = document.new_page(width=612, height=792)
+            first.insert_textbox(fitz.Rect(72, 72, 540, 200),  # type: ignore[no-untyped-call]
+                "Synthetic multipage record\nEmail: multi@example.test\n"
+                "This page contains enough extractable text.", fontsize=12)
+            second = document.new_page(width=612, height=792)
+            second.insert_textbox(fitz.Rect(72, 72, 540, 200),  # type: ignore[no-untyped-call]
+                "Synthetic second page\nPhone: 773-555-0175\n"
+                "This page also contains extractable text.", fontsize=12)
+        elif variant == "repeated":
+            page = document.new_page(width=612, height=792)
+            page.insert_textbox(fitz.Rect(72, 72, 540, 220),  # type: ignore[no-untyped-call]
+                "Synthetic repeated record\nEmail: repeat@example.test\n"
+                "Confirmation email: repeat@example.test\n"
+                "Both occurrences must map and redact.", fontsize=12)
+        else:
+            raise ValueError(f"unknown synthetic PDF variant: {variant}")
         document.set_metadata({"title": "Synthetic private demo",
                                "author": "Cleanroom synthetic fixture"})
         document.save(path, garbage=4, clean=True, deflate=True)  # type: ignore[no-untyped-call]

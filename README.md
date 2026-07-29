@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/leoscha/Cleanroom/releases/tag/v0.2.1"><img src="https://img.shields.io/badge/version-v0.2.1-2563eb" alt="Version v0.2.1"></a>
+  <a href="https://github.com/leoscha/Cleanroom/releases/tag/v0.3.0"><img src="https://img.shields.io/badge/version-v0.3.0-2563eb" alt="Version v0.3.0"></a>
   <a href="https://github.com/leoscha/Cleanroom/actions/workflows/ci.yml"><img src="https://github.com/leoscha/Cleanroom/actions/workflows/ci.yml/badge.svg" alt="CI status"></a>
   <img src="https://img.shields.io/badge/python-3.12%2B-334155" alt="Python 3.12 or newer">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache--2.0-0ea5e9" alt="Apache-2.0 license"></a>
@@ -142,11 +142,11 @@ philosophy](docs/philosophy.md), and [privacy notes](PRIVACY.md) before producti
 | Format | Status | Notes |
 | --- | --- | --- |
 | UTF-8 `.txt` | Supported | Primary v0.2 workflow |
-| Text-based `.pdf` | Early support | Digitally generated PDFs with extractable text only |
+| Text-based `.pdf` | Supported | Digitally generated PDFs with extractable text and no unreviewed images |
 | Scanned/image-only PDF | Rejected | OCR is not available |
 | DOCX, images, spreadsheets | Rejected | Planned only after safe parsing and verification exist |
 
-PDFs with encryption, forms, attachments, JavaScript, launch actions, uncertain text
+PDFs with encryption, forms, attachments, JavaScript, launch actions, images by default, uncertain text
 mapping, or other unsupported structures fail closed. Passing verification is not a
 claim of forensic irrecoverability against every PDF parser.
 
@@ -163,7 +163,7 @@ claim of forensic irrecoverability against every PDF parser.
 ## Roadmap
 
 - **v0.2:** Production text sanitization.
-- **v0.3:** Hardened native PDF support.
+- **v0.3:** Hardened native text-based PDF support.
 - **v0.4:** Local review UI.
 - **v0.5:** OCR.
 - **v1.0:** AI Privacy Gateway.
@@ -183,7 +183,7 @@ mypy src
 Read the [contribution guide](.github/CONTRIBUTING.md), [Code of
 Conduct](.github/CODE_OF_CONDUCT.md), and [security reporting
 policy](.github/SECURITY.md). Release information lives in the
-[changelog](CHANGELOG.md) and [v0.2.1 notes](docs/releases/v0.2.1.md).
+[changelog](CHANGELOG.md) and [v0.3.0 notes](docs/releases/v0.3.0.md).
 
 ## License
 

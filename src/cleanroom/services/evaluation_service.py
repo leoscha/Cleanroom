@@ -138,14 +138,21 @@ class EvaluationService:
         temporary_pdf: tempfile.TemporaryDirectory[str] | None = None
         if self.pdf_handler and (expected_dir / "pdf-structured.json").is_file():
             temporary_pdf = tempfile.TemporaryDirectory(prefix="cleanroom-evaluation-")
-            generated_pdf = Path(temporary_pdf.name) / "pdf-structured.pdf"
-            create_synthetic_pdf(generated_pdf)
-            extracted = self.pdf_handler.extract(generated_pdf)
-            expected = json.loads(
+            standard_expected = json.loads(
                 (expected_dir / "pdf-structured.json").read_text()
             )["findings"]
-            cases.append(("pdf-structured.pdf", extracted.text, expected,
-                          "pdf", generated_pdf, extracted.page_count))
+            pdf_specs = (
+                ("pdf-structured", "structured", standard_expected),
+                ("pdf-multipage", "multipage", None),
+                ("pdf-repeated", "repeated", None),
+            )
+            for name, variant, fixture_expected in pdf_specs:
+                generated_pdf = Path(temporary_pdf.name) / f"{name}.pdf"
+                create_synthetic_pdf(generated_pdf, variant)
+                extracted = self.pdf_handler.extract(generated_pdf)
+                expected = fixture_expected or _pdf_expected(name, extracted.text)
+                cases.append((generated_pdf.name, extracted.text, expected,
+                              "pdf", generated_pdf, extracted.page_count))
         for case_name, text, expected, document_type, case_pdf_path, page_count in cases:
             started = time.monotonic()
             deterministic = await self.regex.detect(text, self.policy) if detector in {"regex", "combined"} else []
@@ -178,7 +185,7 @@ class EvaluationService:
                     sanitized_pdf = self.pdf_handler.sanitize(extracted, accepted)
                     pdf_expected += len(accepted)
                     pdf_mapped += len(sanitized_pdf.mappings)
-                    destination = case_pdf_path.with_name("pdf-structured-clean.pdf")
+                    destination = case_pdf_path.with_name(f"{case_pdf_path.stem}-clean.pdf")
                     output = self.pdf_handler.write(sanitized_pdf, destination)
                     structural = self.pdf_handler.verify_output(output, page_count)
                     absence = self.pdf_handler.verify_original_absence(output, replaced)
@@ -276,6 +283,25 @@ def _percentile(values: list[float], percentile: float) -> float:
         return 0
     ordered = sorted(values)
     return ordered[min(len(ordered) - 1, int((len(ordered) - 1) * percentile))]
+
+
+def _pdf_expected(case_name: str, text: str) -> list[dict[str, object]]:
+    values = {
+        "pdf-multipage": (("EMAIL", "multi@example.test"), ("PHONE", "773-555-0175")),
+        "pdf-repeated": (("EMAIL", "repeat@example.test"),),
+    }.get(case_name)
+    if values is None:
+        raise ValueError(f"missing PDF evaluation annotations for {case_name}")
+    findings: list[dict[str, object]] = []
+    for category, value in values:
+        offset = 0
+        while (start := text.find(value, offset)) >= 0:
+            findings.append({"category": category, "text": value, "start": start,
+                             "end": start + len(value), "required": True})
+            offset = start + len(value)
+    if not findings:
+        raise ValueError(f"PDF evaluation fixture {case_name} did not extract expected text")
+    return findings
 
 
 def _summary_markdown(summary: EvaluationSummary) -> str:

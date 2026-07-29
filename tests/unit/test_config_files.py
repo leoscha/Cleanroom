@@ -34,6 +34,7 @@ def test_pdf_settings_and_extensions_are_validated() -> None:
                         CLEANROOM_SUPPORTED_EXTENSIONS=".PDF,.txt",
                         CLEANROOM_PDF_REPLACEMENT_MODE="blank")
     assert settings.extension_set == {".pdf", ".txt"}
+    assert settings.pdf_reject_images is True
     with pytest.raises(ValidationError, match="PDF_REPLACEMENT_MODE"):
         Settings(OLLAMA_BASE_URL="http://127.0.0.1:11434",
                  CLEANROOM_PDF_REPLACEMENT_MODE="overlay")

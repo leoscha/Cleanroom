@@ -51,11 +51,11 @@ unsafe optional private-review diff, or every forensic recovery technique.
 - Detection reduces risk; deterministic rules have boundaries and AI detection is
   probabilistic.
 - Human review may still be required, especially for high-risk or ambiguous content.
-- OCR and image-only PDFs are unsupported.
+- OCR and image sanitization are unsupported. PDFs containing images fail closed by
+  default unless an operator explicitly accepts responsibility for reviewed pixels.
 - Scans, images, DOCX, spreadsheets, and other unsupported formats are rejected rather
   than silently processed.
 - Supported PDFs must be digitally generated and text based. Passing verification is
   not a guarantee of forensic irrecoverability against every PDF parser.
 - Processing is sequential and designed for one local workspace, not multi-user use.
 - Public or untrusted inference can expose content; local Ollama is recommended.
-
